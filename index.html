@@ -264,7 +264,8 @@
         </div>
 
         <div class="w-full mt-12 pt-6 border-t border-brand/20">
-          <div class="font-mono text-4xl font-black text-brand tracking-tight text-center mb-6">12 900 ₽</div>
+          <div id="hub-plus-price" class="font-mono text-4xl font-black text-brand tracking-tight text-center mb-2">12 900 ₽</div>
+          <p id="hub-plus-price-note" class="font-mono text-[10px] text-zinc-600 text-center mb-4 min-h-[14px]"></p>
           <p class="font-mono text-[11px] text-brand/70 text-center mb-4">Промокод на 1 000 ₽: <span class="text-brand font-bold">ETOYA</span></p>
           <div class="w-full mb-4 text-left">
             <input type="text" id="promo-field" placeholder="ПРОМОКОД" class="w-full bg-bgCard border border-zinc-900 focus:border-brand/30 text-textCream font-mono text-xs rounded-lg px-3 py-3 outline-none transition-colors placeholder-zinc-700 text-center tracking-widest">
@@ -457,9 +458,17 @@
 
     const promoField = document.getElementById('promo-field');
     const plusBtn = document.getElementById('payment-btn-plus');
+    const plusPrice = document.getElementById('hub-plus-price');
+    const plusPriceNote = document.getElementById('hub-plus-price-note');
     const baseHref = plusBtn.getAttribute('href');
+    const basePrice = '12 900 ₽';
+    const discountedPrice = '11 900 ₽';
+    const promoCode = 'etoya';
     promoField.addEventListener('input', (e) => {
       const val = e.target.value.trim().toLowerCase();
+      const promoApplied = val === promoCode;
+      plusPrice.textContent = promoApplied ? discountedPrice : basePrice;
+      plusPriceNote.textContent = promoApplied ? 'Промокод применён: скидка 1 000 ₽' : '';
       plusBtn.setAttribute('href', val ? `${baseHref}?start=${encodeURIComponent(val)}` : baseHref);
     });
 

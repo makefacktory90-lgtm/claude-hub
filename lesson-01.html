@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Hub — Урок 1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background:
+        radial-gradient(circle at top, rgba(217, 119, 87, 0.12), transparent 28%),
+        #050505;
+    }
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(217, 119, 87, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(217, 119, 87, 0.02) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased bg-grid">
+  <main class="max-w-7xl mx-auto px-6 py-8 md:py-12">
+    <div class="mb-8">
+      <a href="./portal.html#day-01" class="inline-flex rounded-full border border-zinc-800 px-4 py-2 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 hover:border-brand hover:text-brand transition">
+        Назад в портал
+      </a>
+    </div>
+
+    <div class="grid gap-8 xl:grid-cols-[1.15fr_0.85fr]">
+      <section class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">1 июня · урок 1</div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+          Установка Claude и расширения
+        </h1>
+        <p class="text-zinc-400 text-base md:text-lg leading-relaxed mb-6 max-w-3xl">
+          Ставим desktop app и расширение для Chrome, выдаём доступы и смотрим, как Claude работает не только как чат, но и как инструмент для анализа страниц.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <a href="https://www.loom.com/share/204bb78ec6494d77a3c19fe1ccb963b4" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+            Открыть Loom
+          </a>
+          <a href="./lesson-01-guide.html" target="_blank" rel="noreferrer" class="inline-flex rounded-full border border-zinc-700 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-zinc-200 hover:border-brand hover:text-brand transition">
+            Открыть гайд
+          </a>
+        </div>
+        <div class="overflow-hidden rounded-[24px] border border-zinc-900 bg-black">
+          <iframe
+            src="https://www.loom.com/embed/204bb78ec6494d77a3c19fe1ccb963b4?sid=7cfa4d98-0cb0-4998-b8cc-9fced8eb81c7"
+            frameborder="0"
+            allowfullscreen
+            class="w-full aspect-video"
+          ></iframe>
+        </div>
+      </section>
+
+      <aside class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-500 mb-3">Гайд</div>
+        <h2 class="text-2xl font-black tracking-tight text-white mb-4">
+          Что сделать после просмотра
+        </h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed mb-6">
+          <li>Установить desktop app Claude.</li>
+          <li>Установить расширение для Chrome.</li>
+          <li>Зайти в аккаунт в приложении и расширении.</li>
+          <li>Выдать Claude доступ к странице.</li>
+          <li>Проверить, что Claude умеет читать и анализировать открытый сайт.</li>
+        </ul>
+        <div class="rounded-2xl border border-zinc-900 bg-bgCard/40 p-4">
+          <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500 mb-2">Домашка</div>
+          <div class="text-zinc-300">
+            Установить app и extension, выдать разрешения и протестировать Claude на любой открытой странице.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

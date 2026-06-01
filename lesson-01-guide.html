@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 1 — Гайд</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased">
+  <main class="max-w-4xl mx-auto px-6 py-10 md:py-14">
+    <div class="mb-8">
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">Claude Hub · lesson 01</div>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+        Установка Claude и расширения
+      </h1>
+      <p class="text-zinc-400 text-base md:text-lg leading-relaxed max-w-3xl">
+        Быстрый гайд к первому уроку: ставим desktop app, ставим расширение для Chrome, выдаём доступы и проверяем, что Claude умеет работать со страницами не только как чат.
+      </p>
+      <div class="mt-6">
+        <a href="https://www.loom.com/share/204bb78ec6494d77a3c19fe1ccb963b4" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть Loom
+        </a>
+      </div>
+    </div>
+
+    <section class="space-y-6">
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Что делаем</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Ставим `desktop app` Claude.</li>
+          <li>Ставим расширение Claude для `Chrome`.</li>
+          <li>Заходим в аккаунт и выдаём нужные разрешения.</li>
+          <li>Смотрим, как в Claude устроены `Chat`, `Cowork / Work` и `Claude Code`.</li>
+          <li>Проверяем, что Claude умеет читать и анализировать открытую страницу.</li>
+        </ul>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Шаги</h2>
+        <div class="space-y-5 text-zinc-300 leading-relaxed">
+          <div>
+            <h3 class="font-semibold text-white mb-2">1. Откройте Settings</h3>
+            <p>Войдите в Claude, откройте `Settings` и нажмите `Get apps and extensions`.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">2. Установите desktop app</h3>
+            <p>Выберите версию под `Mac` или `Windows`. Если нужный вариант не показывается, скачайте его с `claude.com/downloads`.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">3. Зайдите в приложение</h3>
+            <p>После установки откройте Claude Desktop и войдите в аккаунт.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">4. Посмотрите на режимы</h3>
+            <p>Для ориентира внутри Claude есть `Chat`, `Cowork / Work` и `Claude Code`. Сегодня просто смотрим карту, не уходим глубоко.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">5. Установите расширение для Chrome</h3>
+            <p>Снова зайдите в `Get apps and extensions`, найдите расширение для Chrome и установите его.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">6. Выдайте доступы</h3>
+            <p>Если Claude запрашивает доступ к странице или контенту вкладки, подтвердите его. Иначе он не сможет читать сайт сам.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">7. Проверьте на любой странице</h3>
+            <p>Откройте сайт и попросите Claude его разобрать. Без скриншотов, без копипаста, просто дайте задачу.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Домашка</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Установить desktop app.</li>
+          <li>Установить расширение для Chrome.</li>
+          <li>Зайти в аккаунт везде, где нужно.</li>
+          <li>Выдать все нужные разрешения.</li>
+          <li>Проверить, что Claude умеет читать и анализировать страницу в браузере.</li>
+        </ul>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Важно</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Не останавливайтесь только на браузерном чате.</li>
+          <li>Для простых задач обычно хватает `Sonnet`.</li>
+          <li>`Opus` имеет смысл брать для более тяжёлой аналитики.</li>
+          <li>Если вы в России, мобильную версию Claude лучше пока не делать обязательной частью работы.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

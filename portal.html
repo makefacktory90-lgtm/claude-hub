@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Hub Portal — ira&ai</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top, rgba(217, 119, 87, 0.12), transparent 28%),
+        #050505;
+    }
+
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(217, 119, 87, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(217, 119, 87, 0.02) 1px, transparent 1px);
+    }
+
+    .star-clip {
+      clip-path: polygon(50% 0%, 63% 38%, 100% 38%, 69% 59%, 82% 100%, 50% 75%, 18% 100%, 31% 59%, 0% 38%, 37% 38%);
+    }
+
+    .glow-brand {
+      box-shadow: 0 0 40px rgba(217, 119, 87, 0.16);
+    }
+
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1.5rem;
+      padding: 1px;
+      background: linear-gradient(145deg, rgba(217, 119, 87, 0.28), rgba(255, 255, 255, 0.04));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .lesson-card.locked::before {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    }
+
+    .video-frame {
+      aspect-ratio: 16 / 9;
+      background:
+        linear-gradient(135deg, rgba(217, 119, 87, 0.14), rgba(217, 119, 87, 0.02)),
+        #0b0b0b;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050505; }
+    ::-webkit-scrollbar-thumb { background: #1F1F1F; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D97757; }
+  </style>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased overflow-x-hidden bg-grid">
+  <div id="gate" class="fixed inset-0 z-50 flex items-center justify-center px-6 bg-bgMain/95 backdrop-blur-lg">
+    <div class="w-full max-w-xl rounded-[32px] border border-zinc-900 bg-zinc-950/90 p-8 md:p-10 glow-brand">
+      <div class="mx-auto mb-6 h-16 w-16 bg-brand star-clip"></div>
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 text-center mb-3">Claude Hub Portal</div>
+      <h1 class="text-center text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-5">
+        Claude Hub Portal
+      </h1>
+      <p class="text-center text-zinc-400 leading-relaxed max-w-md mx-auto mb-8">
+        Введите пароль и заходите смотреть уроки.
+      </p>
+      <form id="gate-form" class="space-y-4">
+        <label for="password" class="block font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">
+          Пароль
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••••••••••"
+          class="w-full rounded-2xl border border-zinc-800 bg-zinc-900 px-5 py-4 text-base text-white outline-none transition focus:border-brand"
+        >
+        <button
+          type="submit"
+          class="w-full rounded-2xl bg-brand px-5 py-4 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain transition hover:opacity-95"
+        >
+          Открыть портал
+        </button>
+      </form>
+      <p id="gate-error" class="mt-4 hidden rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+        Пароль не подошёл. Проверьте раскладку и попробуйте ещё раз.
+      </p>
+      <div class="mt-8 flex items-center justify-between gap-4 text-xs text-zinc-500">
+        <span class="font-mono">ira&ai</span>
+        <a href="https://t.me/ira_and_ai" target="_blank" rel="noreferrer" class="text-brand hover:opacity-80 transition-opacity">
+          @ira_and_ai
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="app" class="opacity-0 pointer-events-none transition-opacity duration-300">
+    <nav class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex justify-between items-center relative z-20 font-mono text-xs">
+      <div>
+        <div class="text-brand font-bold tracking-wider">ira&ai</div>
+        <div class="text-zinc-600 mt-1">Claude Hub Portal</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://t.me/ira_and_ai" target="_blank" rel="noreferrer" class="hidden sm:inline-flex border border-zinc-800 text-zinc-400 rounded-full px-5 py-2 tracking-wide hover:border-brand hover:text-brand transition-all">
+          @ira_and_ai
+        </a>
+        <button id="lock-button" class="border border-zinc-800 text-zinc-500 rounded-full px-4 py-2 tracking-wide hover:border-brand hover:text-brand transition-all">
+          lock
+        </button>
+      </div>
+    </nav>
+
+    <section class="max-w-7xl mx-auto px-6 pt-8 md:pt-12 pb-16">
+      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-start">
+        <div class="rounded-[32px] border border-zinc-900 bg-zinc-950/70 p-8 md:p-10 relative overflow-hidden glow-brand">
+          <div class="absolute right-8 top-8 hidden md:block h-20 w-20 bg-brand/10 star-clip"></div>
+          <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-4">1–21 июня 2026</div>
+          <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tight text-white leading-none mb-5">
+            Claude Hub
+            <span class="block text-brand">Portal</span>
+          </h1>
+          <p class="max-w-2xl text-zinc-400 text-base md:text-lg leading-relaxed mb-8">
+            Отдельная страница с уроками хаба. Без воскресений, без хаоса, без
+            «а где там была ссылка». Первый урок открыт. Остальные лежат по датам и ждут своего часа.
+          </p>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-zinc-900 bg-bgCard/40 p-4">
+              <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500 mb-2">Формат</div>
+              <div class="text-white font-semibold">Короткие уроки</div>
+              <div class="text-sm text-zinc-500 mt-1">каждый день по делу</div>
+            </div>
+            <div class="rounded-2xl border border-zinc-900 bg-bgCard/40 p-4">
+              <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500 mb-2">Ритм</div>
+              <div class="text-white font-semibold">Каждый день</div>
+              <div class="text-sm text-zinc-500 mt-1">кроме воскресений</div>
+            </div>
+            <div class="rounded-2xl border border-zinc-900 bg-bgCard/40 p-4">
+              <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500 mb-2">Контакт</div>
+              <div class="text-white font-semibold">@ira_and_ai</div>
+              <div class="text-sm text-zinc-500 mt-1">telegram</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="rounded-[32px] border border-zinc-900 bg-zinc-950/70 p-8 md:p-10">
+          <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-4">Сегодня открыт</div>
+          <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-3">
+            1 июня — старт и установка
+          </h2>
+          <p class="text-zinc-400 leading-relaxed mb-5">
+            Сегодня без GitHub, без терминала и без лишнего героизма.
+            Просто ставим базовую среду, чтобы дальше ничего не отвалилось.
+          </p>
+          <ul class="space-y-3 text-sm text-zinc-300">
+            <li class="flex gap-3"><span class="text-brand">01</span><span>Claude открывается в браузере</span></li>
+            <li class="flex gap-3"><span class="text-brand">02</span><span>Desktop app установлен</span></li>
+            <li class="flex gap-3"><span class="text-brand">03</span><span>Расширение установлено</span></li>
+            <li class="flex gap-3"><span class="text-brand">04</span><span>Нужные permissions выданы</span></li>
+          </ul>
+          <a href="#day-01" class="mt-7 inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+            Перейти к уроку
+          </a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div class="flex items-end justify-between gap-6 mb-8">
+        <div>
+          <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-600 mb-2">Lesson Map</div>
+          <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-white">Уроки по датам</h2>
+        </div>
+        <div class="hidden md:block font-mono text-xs text-zinc-500">
+          Воскресенья пропущены специально. Не ищите там подвох.
+        </div>
+      </div>
+
+      <div id="lessons-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"></div>
+    </section>
+
+    <footer class="border-t border-zinc-900/60">
+      <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm text-zinc-500">
+        <div>
+          Claude Hub Portal · ira&ai
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://t.me/ira_and_ai" target="_blank" rel="noreferrer" class="text-brand hover:opacity-80 transition-opacity">
+            @ira_and_ai
+          </a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const PASSWORD = 'claude-rabota-0106-2106';
+
+    const lessons = [
+      {
+        id: 'day-01',
+        date: '1 июня',
+        weekday: 'понедельник',
+        title: 'Старт: браузер, app, extension, permissions',
+        status: 'open',
+        summary: 'Ставим desktop app и расширение для Chrome, выдаём доступы и смотрим, как в Claude устроены chat, Cowork и Claude Code.',
+        homework: 'Установить app и extension, зайти в аккаунт, выдать разрешения и проверить, что Claude умеет читать и анализировать страницу в браузере.',
+        lessonUrl: './lesson-01.html'
+      },
+      {
+        id: 'day-02',
+        date: '2 июня',
+        weekday: 'вторник',
+        title: 'Какие задачи нести в chat, а какие в Cowork',
+        status: 'locked',
+        summary: 'Разбираем это на бизнес-кейсах: где хватает одного окна, а где уже нужен Cowork и параллельная работа.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-03',
+        date: '3 июня',
+        weekday: 'среда',
+        title: 'Плагины, расширения и базовые усилители',
+        status: 'locked',
+        summary: 'Ставим и смотрим всё, что реально усиливает рабочий процесс, а не просто красиво звучит.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-04',
+        date: '4 июня',
+        weekday: 'четверг',
+        title: 'Connectors: подключаем Claude к работе',
+        status: 'locked',
+        summary: 'Подключаем внешние источники и смотрим, как Claude перестаёт быть изолированным окном.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-05',
+        date: '5 июня',
+        weekday: 'пятница',
+        title: 'Бизнес-задачи: как Claude помогает в реальной работе',
+        status: 'locked',
+        summary: 'Маркетинг, продажи, операционка, анализ, документы: смотрим, какие задачи сюда нести и как их раскладывать.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-06',
+        date: '6 июня',
+        weekday: 'суббота',
+        title: 'Claude Code: первый рабочий заход',
+        status: 'locked',
+        summary: 'Спокойно заходим в Claude Code и смотрим, где он полезен даже человеку не из разработки.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-07',
+        date: '8 июня',
+        weekday: 'понедельник',
+        title: '8 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-08',
+        date: '9 июня',
+        weekday: 'вторник',
+        title: '9 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-09',
+        date: '10 июня',
+        weekday: 'среда',
+        title: '10 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-10',
+        date: '11 июня',
+        weekday: 'четверг',
+        title: '11 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-11',
+        date: '12 июня',
+        weekday: 'пятница',
+        title: '12 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-12',
+        date: '13 июня',
+        weekday: 'суббота',
+        title: '13 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-13',
+        date: '15 июня',
+        weekday: 'понедельник',
+        title: '15 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-14',
+        date: '16 июня',
+        weekday: 'вторник',
+        title: '16 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-15',
+        date: '17 июня',
+        weekday: 'среда',
+        title: '17 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-16',
+        date: '18 июня',
+        weekday: 'четверг',
+        title: '18 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-17',
+        date: '19 июня',
+        weekday: 'пятница',
+        title: '19 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      },
+      {
+        id: 'day-18',
+        date: '20 июня',
+        weekday: 'суббота',
+        title: '20 июня',
+        status: 'locked',
+        summary: 'Откроется по ходу.',
+        homework: 'Откроется по ходу.'
+      }
+    ];
+
+    const app = document.getElementById('app');
+    const gate = document.getElementById('gate');
+    const gateForm = document.getElementById('gate-form');
+    const gateError = document.getElementById('gate-error');
+    const passwordInput = document.getElementById('password');
+    const lessonsGrid = document.getElementById('lessons-grid');
+    const lockButton = document.getElementById('lock-button');
+
+    function unlockPortal() {
+      gate.classList.add('hidden');
+      app.classList.remove('opacity-0', 'pointer-events-none');
+      sessionStorage.setItem('claudeHubPortalUnlocked', 'true');
+    }
+
+    function lockPortal() {
+      sessionStorage.removeItem('claudeHubPortalUnlocked');
+      gate.classList.remove('hidden');
+      app.classList.add('opacity-0', 'pointer-events-none');
+      passwordInput.value = '';
+    }
+
+    gateForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (passwordInput.value === PASSWORD) {
+        gateError.classList.add('hidden');
+        unlockPortal();
+        return;
+      }
+
+      gateError.classList.remove('hidden');
+    });
+
+    lockButton.addEventListener('click', lockPortal);
+
+    function renderLesson(lesson) {
+      const isOpen = lesson.status === 'open';
+      const statusClass = isOpen
+        ? 'text-brand border-brand/30 bg-brand/10'
+        : 'text-zinc-500 border-zinc-800 bg-zinc-900/60';
+      const cardClass = isOpen
+        ? 'lesson-card'
+        : 'lesson-card locked opacity-85';
+
+      const videoBlock = isOpen
+        ? `
+          <div class="video-frame rounded-2xl border border-zinc-900 flex items-center justify-center p-6 mb-5">
+            ${lesson.lessonUrl
+              ? `<div class="flex flex-col items-center gap-3">
+                  <a href="${lesson.lessonUrl}" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">Открыть урок</a>
+                </div>`
+              : `<div class="text-center">
+                  <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-brand/80 mb-3">screen studio</div>
+                  <div class="text-white font-semibold mb-2">Скринкаст появится здесь</div>
+                </div>`
+            }
+          </div>
+        `
+        : `
+          <div class="rounded-2xl border border-zinc-900 bg-zinc-950/60 px-4 py-3 mb-5 font-mono text-xs uppercase tracking-[0.18em] text-zinc-600">
+            Урок пока закрыт
+          </div>
+        `;
+
+      return `
+        <article id="${lesson.id}" class="${cardClass} relative rounded-[24px] bg-zinc-950/70 p-6">
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-500 mb-2">${lesson.date} · ${lesson.weekday}</div>
+              <h3 class="text-xl font-black uppercase tracking-tight text-white leading-snug">${lesson.title}</h3>
+            </div>
+            <div class="shrink-0 rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] ${statusClass}">
+              ${isOpen ? 'открыт' : 'скоро'}
+            </div>
+          </div>
+          <p class="text-zinc-400 leading-relaxed mb-5">${lesson.summary}</p>
+          ${videoBlock}
+          <div class="grid gap-4">
+            <div class="rounded-2xl border border-zinc-900 bg-bgCard/30 p-4">
+              <div class="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-500 mb-2">Домашка</div>
+              <div class="text-zinc-300">${lesson.homework}</div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    lessonsGrid.innerHTML = lessons.map(renderLesson).join('');
+
+    if (sessionStorage.getItem('claudeHubPortalUnlocked') === 'true') {
+      unlockPortal();
+    }
+  </script>
+</body>
+</html>

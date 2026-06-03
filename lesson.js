@@ -24,6 +24,7 @@ function getRequestedLessonId() {
 function renderLinks(lessonPage) {
   if (lessonPage.loomUrl) {
     primaryAction.href = lessonPage.loomUrl;
+    primaryAction.textContent = 'Открыть видео';
     primaryAction.classList.remove('hidden');
   } else {
     primaryAction.classList.add('hidden');
@@ -38,6 +39,29 @@ function renderLinks(lessonPage) {
 }
 
 function renderVideo(lessonPage) {
+  const shareUrl = lessonPage.loomUrl ?? '';
+
+  if (shareUrl.includes('screen.studio')) {
+    videoContainer.innerHTML = `
+      <div class="aspect-video flex flex-col items-center justify-center gap-4 p-8 text-center text-zinc-400 bg-zinc-950/70">
+        <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-brand/80">screen.studio</div>
+        <div class="text-xl font-semibold text-white">Видео открывается в новой вкладке</div>
+        <p class="max-w-xl leading-relaxed">
+          Screen Studio запрещает встраивание на чужих сайтах, поэтому здесь не iframe, а нормальная ссылка без битого белого прямоугольника.
+        </p>
+        <a
+          href="${shareUrl}"
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition"
+        >
+          Открыть видео
+        </a>
+      </div>
+    `;
+    return;
+  }
+
   if (lessonPage.loomEmbedUrl) {
     videoContainer.innerHTML = `
       <iframe

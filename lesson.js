@@ -44,11 +44,7 @@ function renderVideo(lessonPage) {
   if (shareUrl.includes('screen.studio')) {
     videoContainer.innerHTML = `
       <div class="aspect-video flex flex-col items-center justify-center gap-4 p-8 text-center text-zinc-400 bg-zinc-950/70">
-        <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-brand/80">screen.studio</div>
-        <div class="text-xl font-semibold text-white">Видео открывается в новой вкладке</div>
-        <p class="max-w-xl leading-relaxed">
-          Screen Studio запрещает встраивание на чужих сайтах, поэтому здесь не iframe, а нормальная ссылка без битого белого прямоугольника.
-        </p>
+        <div class="text-xl font-semibold text-white">Открыть видеоурок</div>
         <a
           href="${shareUrl}"
           target="_blank"

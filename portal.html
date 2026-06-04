@@ -172,15 +172,34 @@
           </div>
         </div>
 
-        <aside class="rounded-[32px] border border-zinc-900 bg-zinc-950/70 p-8 md:p-10">
-          <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-4">Сегодня открыт</div>
-          <h2 id="current-lesson-title" class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-3"></h2>
-          <p id="current-lesson-summary" class="text-zinc-400 leading-relaxed mb-5"></p>
-          <ul id="current-lesson-checklist" class="space-y-3 text-sm text-zinc-300"></ul>
-          <a id="current-lesson-anchor" href="#day-01" class="mt-7 inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
-            Перейти к уроку
-          </a>
-        </aside>
+        <div class="space-y-8 lg:sticky lg:top-6">
+          <aside class="rounded-[32px] border border-zinc-900 bg-zinc-950/70 p-8 md:p-10">
+            <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-4">Сегодня открыт</div>
+            <h2 id="current-lesson-title" class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white mb-3"></h2>
+            <p id="current-lesson-summary" class="text-zinc-400 leading-relaxed mb-5"></p>
+            <ul id="current-lesson-checklist" class="space-y-3 text-sm text-zinc-300"></ul>
+            <a id="current-lesson-anchor" href="#day-01" class="mt-7 inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+              Перейти к уроку
+            </a>
+          </aside>
+
+          <aside class="rounded-[32px] border border-zinc-900 bg-zinc-950/70 p-5 md:p-6 overflow-hidden">
+            <div class="flex items-center justify-between gap-4 mb-4">
+              <div>
+                <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-2">AI помощник</div>
+                <h2 class="text-lg md:text-xl font-black uppercase tracking-tight text-white">Чат внутри хаба</h2>
+              </div>
+            </div>
+            <div class="rounded-[24px] border border-zinc-900 bg-black overflow-hidden h-[520px]">
+              <iframe
+                title="Claude Hub assistant"
+                style="width: 100%; height: 100%; border: none; color-scheme: dark;"
+                src="https://embed.aifromspace.com?assistantId=6948b5aa75dfbe613e4ab9dd&exportChatTheme=black"
+                allow="microphone"
+              ></iframe>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 

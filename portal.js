@@ -12,6 +12,7 @@ const currentLessonTitle = document.getElementById('current-lesson-title');
 const currentLessonSummary = document.getElementById('current-lesson-summary');
 const currentLessonChecklist = document.getElementById('current-lesson-checklist');
 const currentLessonAnchor = document.getElementById('current-lesson-anchor');
+const currentOpenLesson = getOpenLesson();
 
 function unlockPortal() {
   gate.classList.add('hidden');
@@ -51,11 +52,18 @@ function renderCurrentLesson(lesson) {
 
 function renderLesson(lesson) {
   const isOpen = lesson.status === 'open';
+  const isCurrent = lesson.id === currentOpenLesson.id;
   const lessonUrl = lesson.lessonUrl ?? `./lesson.html?id=${lesson.id}`;
   const statusClass = isOpen
-    ? 'text-brand border-brand/30 bg-brand/10'
+    ? isCurrent
+      ? 'text-bgMain border-brand bg-brand'
+      : 'text-brand border-brand/30 bg-brand/10'
     : 'text-zinc-500 border-zinc-800 bg-zinc-900/60';
-  const cardClass = isOpen ? 'lesson-card' : 'lesson-card locked opacity-85';
+  const cardClass = isOpen
+    ? isCurrent
+      ? 'lesson-card ring-1 ring-brand/40'
+      : 'lesson-card'
+    : 'lesson-card locked opacity-85';
 
   const videoBlock = isOpen
     ? `
@@ -85,7 +93,7 @@ function renderLesson(lesson) {
           <h3 class="text-xl font-black uppercase tracking-tight text-white leading-snug">${lesson.title}</h3>
         </div>
         <div class="shrink-0 rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] ${statusClass}">
-          ${isOpen ? 'открыт' : 'скоро'}
+          ${isCurrent ? 'сегодня' : isOpen ? 'открыт' : 'скоро'}
         </div>
       </div>
       <p class="text-zinc-400 leading-relaxed mb-5">${lesson.summary}</p>
@@ -114,7 +122,7 @@ gateForm.addEventListener('submit', (event) => {
 
 lockButton.addEventListener('click', lockPortal);
 
-renderCurrentLesson(getOpenLesson());
+renderCurrentLesson(currentOpenLesson);
 lessonsGrid.innerHTML = lessons.map(renderLesson).join('');
 
 if (sessionStorage.getItem('claudeHubPortalUnlocked') === 'true') {

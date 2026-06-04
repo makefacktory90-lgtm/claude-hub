@@ -7,11 +7,6 @@ const gateError = document.getElementById('gate-error');
 const passwordInput = document.getElementById('password');
 const lessonsGrid = document.getElementById('lessons-grid');
 const lockButton = document.getElementById('lock-button');
-
-const currentLessonTitle = document.getElementById('current-lesson-title');
-const currentLessonSummary = document.getElementById('current-lesson-summary');
-const currentLessonChecklist = document.getElementById('current-lesson-checklist');
-const currentLessonAnchor = document.getElementById('current-lesson-anchor');
 const currentOpenLesson = getOpenLesson();
 
 function unlockPortal() {
@@ -25,29 +20,6 @@ function lockPortal() {
   gate.classList.remove('hidden');
   app.classList.add('opacity-0', 'pointer-events-none');
   passwordInput.value = '';
-}
-
-function escapeHtml(value) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function renderCurrentLesson(lesson) {
-  currentLessonTitle.textContent = `${lesson.date} — ${lesson.title}`;
-  currentLessonSummary.textContent = lesson.summary;
-  currentLessonAnchor.href = `#${lesson.id}`;
-
-  const checklist = lesson.portalChecklist ?? [];
-  currentLessonChecklist.innerHTML = checklist
-    .map(
-      (item, index) =>
-        `<li class="flex gap-3"><span class="text-brand">${String(index + 1).padStart(2, '0')}</span><span>${escapeHtml(item)}</span></li>`
-    )
-    .join('');
 }
 
 function renderLesson(lesson) {
@@ -122,7 +94,6 @@ gateForm.addEventListener('submit', (event) => {
 
 lockButton.addEventListener('click', lockPortal);
 
-renderCurrentLesson(currentOpenLesson);
 lessonsGrid.innerHTML = lessons.map(renderLesson).join('');
 
 if (sessionStorage.getItem('claudeHubPortalUnlocked') === 'true') {

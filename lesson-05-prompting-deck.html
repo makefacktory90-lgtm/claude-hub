@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Hub — Урок 5. Промптинг</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-soft: #0d0d0f;
+      --slide: #0f1013;
+      --slide-2: #13151a;
+      --text: #f5f5f5;
+      --muted: #b8bcc6;
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #ff4d36;
+      --accent-2: #ff8a1f;
+      --accent-3: #ffffff;
+      --ok: #ffd7d1;
+      --ok-soft: linear-gradient(180deg, rgba(255, 77, 54, 0.12), rgba(255, 138, 31, 0.08));
+      --bad: #ffffff;
+      --bad-soft: rgba(255, 255, 255, 0.03);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 77, 54, 0.16), transparent 26%),
+        radial-gradient(circle at top right, rgba(255, 138, 31, 0.12), transparent 22%),
+        linear-gradient(180deg, #050505 0%, #09090b 100%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(5, 5, 5, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+    }
+
+    .topbar a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .deck {
+      width: min(1280px, calc(100vw - 32px));
+      margin: 24px auto 40px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .slide {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.015)),
+        var(--slide);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      min-height: 720px;
+      padding: 44px 46px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255, 77, 54, 0.08), transparent 30%),
+        linear-gradient(315deg, rgba(255, 138, 31, 0.07), transparent 26%);
+      pointer-events: none;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    h1 {
+      font-size: 56px;
+      max-width: 840px;
+    }
+
+    h2 {
+      font-size: 46px;
+      max-width: 920px;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 920px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.4;
+    }
+
+    .badge {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      color: var(--accent-3);
+      background: linear-gradient(90deg, rgba(255, 77, 54, 0.16), rgba(255, 138, 31, 0.14));
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+    }
+
+    .grid-2-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 22px 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--slide-2);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .formula {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 26px 28px;
+      background:
+        linear-gradient(90deg, rgba(255, 77, 54, 0.15), rgba(255, 138, 31, 0.08)),
+        rgba(255, 255, 255, 0.03);
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .formula span {
+      color: #ffffff;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding-left: 18px;
+      position: relative;
+      font-size: 18px;
+    }
+
+    .list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-2);
+      padding: 6px 0 6px 16px;
+      color: #f0d7d1;
+      font-size: 18px;
+    }
+
+    .prompt-box {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 24px 26px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025)),
+        rgba(255, 255, 255, 0.02);
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .prompt-box strong {
+      color: #ffffff;
+    }
+
+    .tableish {
+      display: grid;
+      gap: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      align-items: start;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .row-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .row-text {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .do, .dont {
+      padding: 24px 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .do {
+      background: var(--ok-soft);
+      border-color: rgba(255, 138, 31, 0.35);
+    }
+
+    .dont {
+      background: var(--bad-soft);
+      border-color: rgba(255, 77, 54, 0.26);
+    }
+
+    .do h3, .dont h3 {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+
+    .do h3 {
+      color: #ffd8cf;
+    }
+
+    .dont h3 {
+      color: #ffffff;
+    }
+
+    .mini {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .slide {
+        min-height: auto;
+        padding: 28px 24px;
+      }
+
+      .grid-2,
+      .grid-2-equal,
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      h2 {
+        font-size: 34px;
+      }
+
+      .lead,
+      .prompt-box,
+      .formula {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="#slide-1">1. Линейка промпта</a>
+    <a href="#slide-2">2. Opus 4.7</a>
+    <a href="#slide-3">3. Opus 4.8</a>
+    <a href="#slide-4">4. Формула</a>
+    <a href="#slide-5">5. Do / Don't</a>
+  </nav>
+
+  <main class="deck">
+    <section class="slide" id="slide-1">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 5</div>
+          <h1>Как выглядит сильный промпт</h1>
+        </div>
+        <div class="badge">Слайд 1</div>
+      </div>
+      <p class="lead">Хороший результат начинается не с “правильного слова”, а с правильно поставленной задачи. Чем яснее структура запроса, тем точнее, чище и полезнее ответ.</p>
+      <div class="grid-2">
+        <div class="stack">
+          <div class="formula"><span>Роль</span> → <span>Контекст</span> → <span>Задача</span> → <span>Формат</span> → <span>Критерии качества</span></div>
+          <div class="tableish">
+            <div class="row">
+              <div class="row-title">Роль</div>
+              <div class="row-text">Кто Claude в этой задаче: редактор, методист, стратег, аналитик, продюсер.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">Контекст</div>
+              <div class="row-text">Для кого делается материал, какая аудитория, ситуация, цель и ограничения.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">Задача</div>
+              <div class="row-text">Что именно нужно сделать: написать, сравнить, структурировать, сократить, переписать, придумать.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">Формат</div>
+              <div class="row-text">В каком виде нужен ответ: список, структура урока, 5 вариантов, таблица, короткие абзацы.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">Критерии качества</div>
+              <div class="row-text">Как выглядит хороший результат: просто, точно, без воды, в нужном тоне, с примерами.</div>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3>Главный принцип</h3>
+            <p>Контекст важнее “магической формулировки”. Claude отвечает лучше, когда заранее понимает задачу, аудиторию и ожидания к результату.</p>
+          </div>
+          <div class="card">
+            <h3>Что это даёт</h3>
+            <p>Меньше случайных ответов, меньше лишнего текста, меньше доработок после первого ответа.</p>
+          </div>
+          <div class="card">
+            <h3>Минимум для рабочего промпта</h3>
+            <p>Даже если вы пишете коротко, всегда укажите задачу, аудиторию и формат ответа. Уже этого достаточно, чтобы качество заметно выросло.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 5</div>
+          <h2>Особенности Claude Opus 4.7</h2>
+        </div>
+        <div class="badge">Слайд 2</div>
+      </div>
+      <p class="lead">Opus 4.7 следует инструкции более буквально. Это сильная сторона, если запрос поставлен точно, и слабое место, если запрос расплывчатый.</p>
+      <div class="grid-2-equal">
+        <div class="stack">
+          <div class="card">
+            <h3>Более буквальное следование</h3>
+            <p>Модель меньше “догадывается” за пользователя. Если вы не попросили важную часть результата, она может её не добавить.</p>
+          </div>
+          <div class="card">
+            <h3>Адаптивная длина ответа</h3>
+            <p>На простой вопрос отвечает короче, на сложную задачу — заметно подробнее. Длину лучше задавать явно.</p>
+          </div>
+          <div class="card">
+            <h3>Более прямой тон</h3>
+            <p>Текст стал более деловым и менее “разговорно-тёплым”, поэтому стиль и тон полезно формулировать отдельно.</p>
+          </div>
+        </div>
+        <div class="stack">
+          <ul class="list">
+            <li>Лучше работает, когда задача сформулирована конкретно и без двусмысленности.</li>
+            <li>Для сложных задач полезно отдельно указать: шаги, формат и критерии хорошего ответа.</li>
+            <li>Если нужен мягкий стиль, это стоит писать прямо: “спокойный, дружелюбный, без давления”.</li>
+            <li>Если нужен краткий ответ, это тоже стоит писать прямо: “коротко, по делу, без лишнего фона”.</li>
+          </ul>
+          <div class="callout">Вывод для ученика: Opus 4.7 не хуже понимает задачу — он просто требует более качественной постановки задачи.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 5</div>
+          <h2>Особенности Claude Opus 4.8</h2>
+        </div>
+        <div class="badge">Слайд 3</div>
+      </div>
+      <p class="lead">Opus 4.8 развивает логику 4.7: лучше держит длинный контекст, точнее калибрует усилие и устойчивее ведёт многошаговые задачи.</p>
+      <div class="grid-2-equal">
+        <div class="stack">
+          <div class="card">
+            <h3>Сильнее в длинной работе</h3>
+            <p>Лучше сохраняет ход мысли в длинной сессии, меньше теряет контекст и устойчивее ведёт сложные задачи до конца.</p>
+          </div>
+          <div class="card">
+            <h3>Лучше калибрует усилие</h3>
+            <p>На простых задачах может быть лаконичнее, на сложных — глубже. Но если запрос слабый, модель всё равно не обязана “достраивать” его за вас.</p>
+          </div>
+          <div class="card">
+            <h3>Выше надёжность</h3>
+            <p>Лучше отмечает неопределённость, аккуратнее работает в длинных многошаговых сценариях и даёт более предсказуемый результат.</p>
+          </div>
+        </div>
+        <div class="stack">
+          <ul class="list">
+            <li>Подходит для задач, где важны качество, длинный контекст и последовательность.</li>
+            <li>Если нужен сильный результат, по-прежнему критичны чёткие критерии и рамки ответа.</li>
+            <li>Для уроков, текстов, исследований и структурирования полезно заранее задать тон, длину и целевой уровень сложности.</li>
+            <li>На слабом запросе Opus 4.8 обычно не “спасает” задачу магией, а честно выполняет то, что было сказано.</li>
+          </ul>
+          <div class="callout">Вывод для ученика: чем умнее модель, тем выше ценность хорошего контекста. Сильная модель лучше раскрывает сильный запрос.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 5</div>
+          <h2>Практическая формула промпта</h2>
+        </div>
+        <div class="badge">Слайд 4</div>
+      </div>
+      <p class="lead">Эту формулу можно использовать как базовый шаблон почти для любой учебной, контентной или рабочей задачи.</p>
+      <div class="stack">
+        <div class="prompt-box">
+          <strong>Ты</strong> [роль].<br />
+          <strong>Контекст:</strong> [кто я, для кого материал, какая ситуация].<br />
+          <strong>Задача:</strong> [что именно нужно сделать].<br />
+          <strong>Формат:</strong> [в каком виде нужен ответ, длина, структура].<br />
+          <strong>Критерии качества:</strong> [каким должен быть хороший результат].<br />
+          <strong>Избегай:</strong> [чего не должно быть в ответе].
+        </div>
+        <div class="grid-2">
+          <div class="stack">
+            <div class="card">
+              <h3>Пример для урока</h3>
+              <p>Ты методист и редактор обучающего контента по AI для новичков. Контекст: я записываю 10-минутный урок для людей, которые боятся технологий и быстро теряют внимание. Задача: напиши структуру урока про промптинг. Формат: таймкоды, короткие реплики ведущего, 1 пример до/после, 1 домашнее задание. Критерии качества: просто, ясно, без перегруза, с ощущением “я смогу”. Избегай: жаргона, длинных объяснений и воды.</p>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="card">
+              <h3>Почему это работает</h3>
+              <p>Claude получает не абстрактную просьбу, а рабочее техническое задание: кто говорит, для кого, что именно нужно, в каком виде и по каким критериям оценивать ответ.</p>
+            </div>
+            <div class="card">
+              <h3>Как докрутить первый ответ</h3>
+              <p>Добавьте контекст, приложите пример нужного стиля или попросите несколько версий: спокойную, энергичную, деловую.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-5">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 5</div>
+          <h2>Do / Don’t: как ставить задачу</h2>
+        </div>
+        <div class="badge">Слайд 5</div>
+      </div>
+      <p class="lead">Слабый запрос даёт случайный результат. Сильный запрос сразу задаёт направление, аудиторию и стандарт качества.</p>
+      <div class="grid-2-equal">
+        <div class="dont">
+          <h3>Don’t</h3>
+          <div class="prompt-box">Напиши пост про Claude.</div>
+          <p class="mini">Слишком широко: непонятно, для кого, зачем, в каком тоне, какой длины и что считать хорошим результатом.</p>
+        </div>
+        <div class="do">
+          <h3>Do</h3>
+          <div class="prompt-box">Ты эксперт по AI для новичков. Контекст: я пишу для людей, которые боятся технологий. Задача: напиши пост о том, что Claude может быть простым и полезным инструментом в повседневной работе. Формат: 4 коротких абзаца. Критерии качества: дружелюбно, понятно, без сложных терминов. Избегай: воды и пафоса.</div>
+          <p class="mini">Такой запрос задаёт роль, аудиторию, цель, формат и стандарт качества. Модель получает ясную рамку для ответа.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -30,8 +30,14 @@ function renderLinks(lessonPage) {
     primaryAction.classList.add('hidden');
   }
 
-  if (lessonPage.guideUrl) {
-    secondaryAction.href = lessonPage.guideUrl;
+  const secondaryUrl = lessonPage.presentationUrl ?? lessonPage.guideUrl;
+  const secondaryLabel = lessonPage.presentationUrl
+    ? 'Открыть презентацию'
+    : 'Открыть гайд';
+
+  if (secondaryUrl) {
+    secondaryAction.href = secondaryUrl;
+    secondaryAction.textContent = secondaryLabel;
     secondaryAction.classList.remove('hidden');
   } else {
     secondaryAction.classList.add('hidden');

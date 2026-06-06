@@ -178,7 +178,6 @@ export const lessons = [
       heroTitle: 'Projects: рабочее пространство и память Клода',
       heroIntro:
         'В этом уроке подключаем память в Claude Cowork и разбираем, как быстро передать новому Клоду данные о себе. Внутри урока — три промпта для создания папок и базовой рабочей памяти проекта.',
-      loomUrl: 'https://screen.studio/share/9LicgbEi?state=uploading',
       presentationUrl: './lesson-06-projects-deck.html',
       afterWatch: [
         'Подключить память внутри Claude Cowork.',

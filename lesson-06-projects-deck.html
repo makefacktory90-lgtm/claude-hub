@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Hub — Урок 6. Projects</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-soft: #0d0d0f;
+      --slide: #0f1013;
+      --slide-2: #13151a;
+      --text: #f5f5f5;
+      --muted: #b8bcc6;
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #ff4d36;
+      --accent-2: #ff8a1f;
+      --accent-3: #ffffff;
+      --ok: #ffd7d1;
+      --ok-soft: linear-gradient(180deg, rgba(255, 77, 54, 0.12), rgba(255, 138, 31, 0.08));
+      --bad: #ffffff;
+      --bad-soft: rgba(255, 255, 255, 0.03);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 77, 54, 0.16), transparent 26%),
+        radial-gradient(circle at top right, rgba(255, 138, 31, 0.12), transparent 22%),
+        linear-gradient(180deg, #050505 0%, #09090b 100%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(5, 5, 5, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+    }
+
+    .topbar a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .deck {
+      width: min(1280px, calc(100vw - 32px));
+      margin: 24px auto 40px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .slide {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.015)),
+        var(--slide);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      min-height: 720px;
+      padding: 44px 46px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255, 77, 54, 0.08), transparent 30%),
+        linear-gradient(315deg, rgba(255, 138, 31, 0.07), transparent 26%);
+      pointer-events: none;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    h1 {
+      font-size: 56px;
+      max-width: 880px;
+    }
+
+    h2 {
+      font-size: 46px;
+      max-width: 940px;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 960px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.4;
+    }
+
+    .badge {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      color: var(--accent-3);
+      background: linear-gradient(90deg, rgba(255, 77, 54, 0.16), rgba(255, 138, 31, 0.14));
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+    }
+
+    .grid-2-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 22px 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--slide-2);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .formula {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 26px 28px;
+      background:
+        linear-gradient(90deg, rgba(255, 77, 54, 0.15), rgba(255, 138, 31, 0.08)),
+        rgba(255, 255, 255, 0.03);
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .formula span {
+      color: #ffffff;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding-left: 18px;
+      position: relative;
+      font-size: 18px;
+    }
+
+    .list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-2);
+      padding: 6px 0 6px 16px;
+      color: #f0d7d1;
+      font-size: 18px;
+    }
+
+    .prompt-box,
+    .tree-box,
+    .route-box {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 24px 26px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025)),
+        rgba(255, 255, 255, 0.02);
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .prompt-box strong,
+    .tree-box strong,
+    .route-box strong {
+      color: #ffffff;
+    }
+
+    .prompt-box {
+      white-space: normal;
+    }
+
+    .prompt-box.compact {
+      font-size: 17px;
+      line-height: 1.42;
+    }
+
+    .copy-box {
+      max-height: none;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      line-height: 1.48;
+      color: #f6e6e2;
+    }
+
+    .slide.copy-slide {
+      min-height: auto;
+    }
+
+    .tree-box {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      color: #f4dad4;
+      line-height: 1.65;
+    }
+
+    .route-box {
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .route-step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .num {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(90deg, rgba(255, 77, 54, 0.8), rgba(255, 138, 31, 0.7));
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .tableish {
+      display: grid;
+      gap: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      align-items: start;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .row-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .row-text {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .do, .dont {
+      padding: 24px 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .do {
+      background: var(--ok-soft);
+      border-color: rgba(255, 138, 31, 0.35);
+    }
+
+    .dont {
+      background: var(--bad-soft);
+      border-color: rgba(255, 77, 54, 0.26);
+    }
+
+    .do h3, .dont h3 {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+
+    .do h3 {
+      color: #ffd8cf;
+    }
+
+    .dont h3 {
+      color: #ffffff;
+    }
+
+    .mini {
+      margin: 12px 0 0;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .big-word {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: clamp(44px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      color: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .slide {
+        min-height: auto;
+        padding: 28px 24px;
+      }
+
+      .grid-2,
+      .grid-2-equal,
+      .grid-3,
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      h2 {
+        font-size: 34px;
+      }
+
+      .lead,
+      .prompt-box,
+      .tree-box,
+      .route-box,
+      .formula {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="#slide-1">1. Старт</a>
+    <a href="#slide-2">2. Принцип</a>
+    <a href="#slide-3">3. Папки</a>
+    <a href="#slide-4">4. Структура</a>
+    <a href="#slide-5">5. ABOUT ME</a>
+    <a href="#slide-6">6. Обновлять</a>
+    <a href="#slide-7">7. Форматы</a>
+    <a href="#slide-8">8. Три промпта</a>
+    <a href="#slide-9">9. Базовый</a>
+    <a href="#slide-10">10. Переносной</a>
+    <a href="#slide-11">11. Global</a>
+    <a href="#slide-12">12. Домашка</a>
+  </nav>
+
+  <main class="deck">
+    <section class="slide" id="slide-1">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h1>Projects: память Клода, чтобы не объяснять себя заново</h1>
+        </div>
+        <div class="badge">Слайд 1</div>
+      </div>
+      <p class="lead">Цель: собрать рабочее пространство, где Claude заранее знает контекст.</p>
+      <div class="grid-2">
+        <div class="stack">
+          <div class="formula"><span>До:</span> каждый раз объясняем контекст заново</div>
+          <div class="formula"><span>После:</span> Claude читает контекст сам</div>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3>Кто вы</h3>
+            <p>Роль, опыт, цели, правила работы.</p>
+          </div>
+          <div class="card">
+            <h3>Как вы пишете</h3>
+            <p>Тон, стиль, запреты, примеры.</p>
+          </div>
+          <div class="card">
+            <h3>Что вы делаете</h3>
+            <p>Проект, продукт, аудитория, ограничения.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Контекст должен жить в одном месте</h2>
+        </div>
+        <div class="badge">Слайд 2</div>
+      </div>
+      <p class="lead">Контекст не пишем заново. Контекст храним в Project.</p>
+      <div class="grid-2-equal">
+        <div class="stack">
+          <div class="formula"><span>Project</span> = папки + файлы о вас + правило, что читать первым</div>
+          <div class="card">
+            <h3>Правило</h3>
+            <p>Качество входа = качество выхода.</p>
+          </div>
+        </div>
+        <div class="stack">
+          <ul class="list">
+            <li>Контекст лежит в одном месте.</li>
+            <li>Tone of voice не теряется в старых чатах.</li>
+            <li>Claude не угадывает стиль и ограничения.</li>
+            <li>Файлы обновляются по ходу работы.</li>
+          </ul>
+          <div class="callout">Project = рабочая память Claude</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-3">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Где создавать папки?</h2>
+        </div>
+        <div class="badge">Слайд 3</div>
+      </div>
+      <p class="lead">2 способа создать структуру.</p>
+      <div class="grid-2-equal">
+        <div class="do">
+          <h3>Вариант 1: руками</h3>
+          <div class="route-box">
+            <div class="route-step"><span class="num">1</span><span>Откройте Claude Cowork.</span></div>
+            <div class="route-step"><span class="num">2</span><span>Создайте Project и подключите папку на компьютере.</span></div>
+            <div class="route-step"><span class="num">3</span><span>Внутри неё сделайте ABOUT ME, OUTPUTS, TEMPLATES.</span></div>
+          </div>
+          <p class="mini">Подходит всем.</p>
+        </div>
+        <div class="dont">
+          <h3>Вариант 2: через Claude</h3>
+          <div class="prompt-box">
+            Создай в моей папке структуру: <strong>ABOUT ME</strong>, <strong>OUTPUTS</strong>, <strong>TEMPLATES</strong>, и покажи дерево.
+          </div>
+          <p class="mini">Если Cowork уже видит рабочую папку.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-4">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Базовая структура: всего 3 папки</h2>
+        </div>
+        <div class="badge">Слайд 4</div>
+      </div>
+      <p class="lead">Минимальная структура для старта.</p>
+      <div class="grid-2">
+        <div class="tree-box">
+          MY CLAUDE WORKSPACE/<br />
+          ├── ABOUT ME/ &nbsp;&nbsp;&nbsp;&nbsp;← контекст, который Клод читает всегда<br />
+          ├── OUTPUTS/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← готовые результаты<br />
+          └── TEMPLATES/ &nbsp;&nbsp;← лучшие примеры и шаблоны
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3>ABOUT ME</h3>
+            <p>Контекст, который Claude читает всегда.</p>
+          </div>
+          <div class="card">
+            <h3>OUTPUTS</h3>
+            <p>Готовые тексты, документы, идеи, сценарии.</p>
+          </div>
+          <div class="card">
+            <h3>TEMPLATES</h3>
+            <p>Лучшие образцы, шаблоны, удачные форматы.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout">ABOUT ME — всегда. OUTPUTS и TEMPLATES — только по запросу.</div>
+    </section>
+
+    <section class="slide" id="slide-5">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Три файла в ABOUT ME — сердце системы</h2>
+        </div>
+        <div class="badge">Слайд 5</div>
+      </div>
+      <p class="lead">3 файла, которые дают Claude базовый контекст.</p>
+      <div class="grid-2">
+        <div class="tree-box">
+          ABOUT ME/<br />
+          ├── about-me.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← кто я, как работаю, что считаю хорошей и плохой работой<br />
+          ├── anti-ai-style.md &nbsp;← как НЕ надо писать: клише, робо-тон, запреты<br />
+          └── my-company.md &nbsp;&nbsp;&nbsp;&nbsp;← что продаю, кому помогаю, приоритеты, на что говорю “нет”
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3>Важно</h3>
+            <p>anti-ai-style часто важнее, чем brand voice.</p>
+          </div>
+          <div class="card">
+            <h3>Примеры запретов</h3>
+            <p>Не сюсюкать. Не писать как инфобиз-лендинг. Без AI-клише.</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2-equal">
+        <div class="do">
+          <h3>Файлы</h3>
+          <p class="mini">Держите файлы короткими: до примерно 2000 слов. Короткий точный контекст Claude читает лучше.</p>
+        </div>
+        <div class="dont">
+          <h3>Не надо</h3>
+          <p class="mini">Не превращайте ABOUT ME в склад всего подряд. Если файл раздут, Claude начинает читать его “по диагонали”.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-6">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Структура обновляется по ходу работы</h2>
+        </div>
+        <div class="badge">Слайд 6</div>
+      </div>
+      <p class="lead">Базовая структура может расширяться.</p>
+      <div class="grid-2">
+        <div class="stack">
+          <ul class="list">
+            <li>Разобрали tone of voice — добавили в about-me.</li>
+            <li>Нашли слова, которые бесят, — добавили в anti-ai-style.</li>
+            <li>Появился новый продукт или клиент — обновили my-company.</li>
+            <li>Получился удачный текст — положили в TEMPLATES как пример.</li>
+          </ul>
+          <div class="callout">Новый контекст → в правильный файл</div>
+        </div>
+        <div class="tree-box">
+          MY CLIENT WORKSPACE/<br />
+          ├── ABOUT ME/<br />
+          ├── CLIENT CONTEXT/<br />
+          ├── OUTPUTS/<br />
+          ├── TEMPLATES/<br />
+          └── REFERENCES/
+        </div>
+      </div>
+      <p class="lead">Для клиентов: отдельный Project под каждого клиента.</p>
+    </section>
+
+    <section class="slide" id="slide-7">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Два формата: как этим пользоваться</h2>
+        </div>
+        <div class="badge">Слайд 7</div>
+      </div>
+      <p class="lead">Выберите формат под свой рабочий сценарий.</p>
+      <div class="grid-2-equal">
+        <div class="do">
+          <h3>Формат 1: один компьютер</h3>
+          <div class="route-box">
+            <div class="route-step"><span class="num">1</span><span>Создали папку на этом компьютере.</span></div>
+            <div class="route-step"><span class="num">2</span><span>Подключили её к Cowork.</span></div>
+            <div class="route-step"><span class="num">3</span><span>Наполнили ABOUT ME и работаете.</span></div>
+          </div>
+          <p class="mini">Базовый вариант.</p>
+        </div>
+        <div class="dont">
+          <h3>Формат 2: переносной комплект</h3>
+          <div class="route-box">
+            <div class="route-step"><span class="num">1</span><span>Кладёте ABOUT ME в Google Drive или Dropbox.</span></div>
+            <div class="route-step"><span class="num">2</span><span>Папка синхронизируется на все устройства.</span></div>
+            <div class="route-step"><span class="num">3</span><span>Нового Claude знакомите фразой: “Прочитай папку ABOUT ME”.</span></div>
+          </div>
+          <p class="mini">Для разных устройств или аккаунтов.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-8">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Три промпта для настройки Cowork</h2>
+        </div>
+        <div class="badge">Слайд 8</div>
+      </div>
+      <p class="lead">Выбрать нужный уровень и скопировать только текст внутри рамки.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Промпт 1 — Базовый</h3>
+          <p>Сделать папки и заполнить файлы о себе. Начать с него.</p>
+        </div>
+        <div class="card">
+          <h3>Промпт 2 — Переносной комплект</h3>
+          <p>Подключаться к любому Claude на любом компьютере.</p>
+        </div>
+        <div class="card">
+          <h3>Промпт 3 — Global Instructions</h3>
+          <p>Настроить короткое ядро, которое Claude читает всегда.</p>
+        </div>
+      </div>
+      <div class="callout">Начать с Промпта 1. Промпты 2 и 3 — после базовой настройки.</div>
+    </section>
+
+    <section class="slide copy-slide" id="slide-9">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Промпт 1 — базовый</h2>
+        </div>
+        <div class="badge">Слайд 9</div>
+      </div>
+      <p class="lead">Папки + файлы о себе.</p>
+      <div class="prompt-box copy-box">Ты — мой помощник по настройке. Я полный новичок, объясняй очень просто,
+без сложных слов. Веди меня строго ЗА РУКУ: один шаг за раз, после каждого
+шага останавливайся и жди, пока я напишу «готово» или отвечу на вопрос.
+Никогда не вываливай всё сразу. Не выдумывай факты обо мне.
+
+Наша цель: создать рабочее пространство и наполнить его файлами обо мне.
+
+Действуй так:
+
+ШАГ 1. Спроси меня одной фразой: подключена ли у тебя сейчас папка с моего
+компьютера (можешь ли ты создавать в ней файлы)? Дождись ответа.
+- Если да — создай внутри три папки: ABOUT ME, OUTPUTS, TEMPLATES,
+  покажи дерево папок и переходи к шагу 2.
+- Если нет — простыми словами, по одному действию за раз, помоги мне
+  подключить папку. После каждого действия спрашивай «получилось?» и жди.
+
+ШАГ 2. Скажи, что теперь возьмёшь у меня короткое интервью, чтобы наполнить
+папку ABOUT ME. Предупреди: вопросов будет немного и по очереди.
+
+ШАГ 3. Задай мне 7–10 вопросов про меня (кто я, чем занимаюсь, для кого
+работаю, мои цели, как принимаю решения, что считаю хорошей и плохой
+работой). Можно задать по 2–3 вопроса за раз, не больше. Дождись ответов.
+
+ШАГ 4. Собери файл ABOUT ME/about-me.md. Покажи мне его целиком и спроси:
+«Подтверждаешь или поправить?» Не иди дальше без моего «да».
+
+ШАГ 5. После «да» задай 5–7 вопросов про мой стиль письма: какой тон,
+какие слова и обороты бесят, что звучит «как робот», 2–3 примера моих
+текстов. Собери ABOUT ME/anti-ai-style.md. Покажи и спроси подтверждение.
+
+ШАГ 6. После «да» задай 5–7 вопросов про мой проект/компанию: аудитория,
+продукты, цели, на что я говорю «нет». Собери ABOUT ME/my-company.md.
+Покажи и спроси подтверждение.
+
+ШАГ 7. В конце покажи дерево папок и скажи простыми словами, что лежит
+в каждом файле и что я могу делать дальше.
+
+Помни: один шаг за раз, жди меня, говори просто.</div>
+    </section>
+
+    <section class="slide copy-slide" id="slide-10">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Промпт 2 — переносной комплект</h2>
+        </div>
+        <div class="badge">Слайд 10</div>
+      </div>
+      <p class="lead">Использовать после Промпта 1, когда ABOUT ME уже наполнена.</p>
+      <div class="prompt-box copy-box">Ты — мой помощник по настройке. Я новичок, объясняй очень просто.
+Веди меня ЗА РУКУ: один шаг за раз, после каждого шага жди, пока я напишу
+«готово». Не вываливай всё сразу.
+
+Цель: сделать так, чтобы моя папка ABOUT ME была доступна на любом
+компьютере и в любом аккаунте Клода. Для этого положим её в облако
+(Google Диск или Яндекс Диск) и будем подключать оттуда.
+
+Действуй так:
+
+ШАГ 1. Спроси меня одной фразой: каким облаком я пользуюсь —
+Google Диск, Яндекс Диск или другим? Дождись ответа.
+
+ШАГ 2. Простыми словами, по одному действию за раз, помоги мне:
+- найти на компьютере папку этого облака;
+- перенести туда мою папку ABOUT ME (или создать её там).
+После каждого действия спрашивай «получилось?» и жди ответа.
+
+ШАГ 3. Объясни простыми словами главную мысль: теперь эта папка одна
+на всех. На любом компьютере я открываю Cowork и подключаю именно эту
+папку из облака. Обновила файлы один раз — обновилось везде.
+
+ШАГ 4. Помоги мне подключить эту облачную папку к Cowork прямо сейчас:
+по одному шагу, спрашивая «получилось?» после каждого.
+Если нужен коннектор/доступ к облаку — объясни, где его включить,
+максимально по шагам, и подожди меня.
+
+ШАГ 5. Дай мне короткую «шпаргалку для нового компьютера»: 3–4 простых
+пункта, что нажать, чтобы подключить эту папку на любом новом устройстве.
+Предложи сохранить шпаргалку файлом в ABOUT ME.
+
+Помни: один шаг за раз, жди меня, говори просто. Не выдумывай.</div>
+    </section>
+
+    <section class="slide copy-slide" id="slide-11">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Промпт 3 — Global Instructions</h2>
+        </div>
+        <div class="badge">Слайд 11</div>
+      </div>
+      <p class="lead">Короткое ядро, которое Claude читает перед каждой задачей.</p>
+      <div class="prompt-box copy-box">Ты — мой помощник по настройке. Я новичок, объясняй очень просто.
+Веди меня ЗА РУКУ: один шаг за раз, после каждого шага жди ответа.
+Не вываливай всё сразу. Не выдумывай факты обо мне.
+
+Цель: настроить Global Instructions — это короткий текст уровня аккаунта,
+который Клод читает перед КАЖДОЙ задачей в любом чате и проекте. Так Клод
+всегда будет знать, кто я, даже без открытой папки.
+
+Сначала объясни мне простыми словами разницу двумя фразами:
+- Global Instructions — общий короткий текст обо мне, работает везде.
+- Папка ABOUT ME — подробные файлы, которые я подключаю к проектам.
+
+Действуй так:
+
+ШАГ 1. Задай мне 4–5 коротких вопросов, чтобы собрать ядро обо мне:
+как меня зовут, чем занимаюсь, для кого, мой тон, и какие слова/обороты
+нельзя использовать никогда. Задавай по 1–2 вопроса за раз. Дождись ответов.
+
+ШАГ 2. Собери короткий текст ядра (до 10 строк) для Global Instructions.
+Обязательно впиши строку «Перед любой задачей сначала прочитай папку
+ABOUT ME, если она подключена». Покажи мне текст и спроси подтверждение.
+
+ШАГ 3. После «да» простыми словами, по одному действию за раз, объясни,
+куда вставить этот текст: Settings → Cowork → Global Instructions.
+Веди меня по шагам и после каждого спрашивай «получилось?».
+
+ШАГ 4. Объясни, где держать саму папку ABOUT ME (на компьютере или
+в облаке) и как подключать её к проектам. Коротко, по шагам.
+
+ШАГ 5. В конце дай мне простую проверку: задай мне тестовый вопрос
+по работе и покажи, что ты уже учитываешь моё ядро. Если что-то не
+учлось — поправь текст ядра вместе со мной.
+
+Помни: один шаг за раз, жди меня, говори просто.</div>
+    </section>
+
+    <section class="slide" id="slide-12">
+      <div class="slide-head">
+        <div>
+          <div class="eyebrow">Claude Hub · Урок 6</div>
+          <h2>Домашка: собрать рабочую память</h2>
+        </div>
+        <div class="badge">Слайд 12</div>
+      </div>
+      <p class="lead">Домашнее задание после урока.</p>
+      <div class="grid-2">
+        <div class="stack">
+          <div class="tableish">
+            <div class="row">
+              <div class="row-title">1. Создать Project</div>
+              <div class="row-text">Создать Project и подключить папку.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">2. Создать 3 папки</div>
+              <div class="row-text">ABOUT ME, OUTPUTS, TEMPLATES.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">3. Запустить Промпт 1</div>
+              <div class="row-text">Собрать хотя бы ABOUT ME/about-me.md.</div>
+            </div>
+            <div class="row">
+              <div class="row-title">4. Прислать скрин</div>
+              <div class="row-text">Структура папок + первый файл контекста.</div>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="formula">Промпт 1 → база<br />Промпт 2 → перенос<br />Промпт 3 → всегда помнит</div>
+          <div class="card">
+            <h3>Что дальше</h3>
+            <p>Давать задачи, сохранять результаты, пополнять шаблоны.</p>
+          </div>
+          <div class="card">
+            <h3>Отчёт</h3>
+            <p>Скрин структуры папок + первый about-me.md.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

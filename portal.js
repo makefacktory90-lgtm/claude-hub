@@ -206,14 +206,14 @@ function renderLessonArt(lessonNumber) {
 
 function renderLessonVisual(lesson, isOpen) {
   const lessonNumber = getLessonNumber(lesson);
-  const isCurrent = currentOpenLesson && lesson.id === currentOpenLesson.id;
   const lessonUrl = lesson.lessonUrl ?? `./lesson.html?id=${lesson.id}`;
   const actionLabel = isOpen ? 'Открыть урок' : 'Скоро';
+  const imagePath = `./lesson-cards/lesson-${String(lessonNumber).padStart(2, '0')}.png`;
 
   return `
     <div class="lesson-visual-shell rounded-[22px] border border-zinc-900 overflow-hidden mb-5">
       <div class="lesson-art ${isOpen ? 'is-open' : 'is-locked'} relative">
-        ${renderLessonArt(lessonNumber)}
+        <img src="${imagePath}" alt="Урок ${lessonNumber}" class="h-full w-full object-cover" loading="lazy">
         <div class="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-3">
           <div class="rounded-full bg-black/45 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/75 backdrop-blur">
             Урок ${lessonNumber}

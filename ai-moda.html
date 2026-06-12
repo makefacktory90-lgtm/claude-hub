@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мода в эпоху ИИ — восемь сдвигов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d0b14;
+    --paper:#f6f1e9;
+    --paper-soft:#ede5d8;
+    --human:#e8654a;      /* тёплая терракота — человеческое */
+    --human-deep:#c43d2a;
+    --ai1:#7b5cff;        /* холодный неон — ИИ */
+    --ai2:#22d3ee;
+    --ai3:#ff4fb8;
+    --muted:#6b6478;
+    --line:rgba(13,11,20,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Spectral",Georgia,serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--human);color:#fff}
+
+  /* ---------- ambient gradient blobs ---------- */
+  .atmosphere{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;mix-blend-mode:multiply}
+  .blob.b1{width:46vw;height:46vw;left:-12vw;top:-8vw;
+    background:radial-gradient(circle at 30% 30%,var(--ai1),transparent 70%);
+    animation:drift1 22s ease-in-out infinite}
+  .blob.b2{width:40vw;height:40vw;right:-10vw;top:18vh;
+    background:radial-gradient(circle at 60% 40%,var(--ai2),transparent 70%);
+    animation:drift2 28s ease-in-out infinite}
+  .blob.b3{width:38vw;height:38vw;left:20vw;bottom:-12vw;
+    background:radial-gradient(circle at 50% 50%,var(--human),transparent 70%);
+    animation:drift3 25s ease-in-out infinite}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8vw,6vh) scale(1.15)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6vw,8vh) scale(.9)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5vw,-6vh) scale(1.1)}}
+
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 28px}
+
+  /* ---------- hero ---------- */
+  header.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:80px 0}
+  .eyebrow{font-family:"Space Mono",monospace;font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-bottom:30px;opacity:0;animation:fade .9s .2s forwards}
+  h1.title{font-family:"Unbounded",sans-serif;font-weight:800;line-height:.96;letter-spacing:-.02em;font-size:clamp(34px,8.4vw,110px);overflow-wrap:break-word;hyphens:auto}
+  .title .l1{display:block;opacity:0;animation:rise 1s .35s cubic-bezier(.2,.8,.2,1) forwards}
+  .title .l2{display:block;opacity:0;animation:rise 1s .5s cubic-bezier(.2,.8,.2,1) forwards}
+  .title .grad{
+    background:linear-gradient(110deg,var(--ai1),var(--ai2) 35%,#ff4fb8 70%,var(--ai1));
+    background-size:300% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:rise 1s .5s cubic-bezier(.2,.8,.2,1) forwards, shimmer 7s linear infinite;
+  }
+  @keyframes shimmer{to{background-position:300% 0}}
+  .lede{max-width:620px;margin-top:38px;font-size:clamp(19px,2.4vw,23px);color:#2c2738;opacity:0;animation:fade 1s .8s forwards}
+  .lede b{font-weight:500;color:var(--human-deep)}
+  .scrollcue{position:absolute;bottom:36px;left:0;font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);opacity:0;animation:fade 1s 1.3s forwards}
+  .scrollcue span{display:inline-block;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  @keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fade{to{opacity:1}}
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:30px 0 110px}
+  .stat{background:var(--paper);padding:30px 26px}
+  .stat .n{font-family:"Unbounded",sans-serif;font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1;background:linear-gradient(120deg,var(--ai1),var(--ai2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .c{font-family:"Space Mono",monospace;font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.5}
+
+  /* ---------- section heads ---------- */
+  .sec-head{margin:0 0 14px}
+  .kicker{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--human-deep);display:block;margin-bottom:18px}
+  h2{font-family:"Unbounded",sans-serif;font-weight:600;font-size:clamp(28px,4.5vw,46px);letter-spacing:-.015em;line-height:1.05}
+  .sec-intro{max-width:640px;color:#33303d;margin-top:20px;font-size:19px}
+
+  /* ---------- probability scale legend ---------- */
+  .scale{display:flex;align-items:center;gap:14px;margin:34px 0 8px;font-family:"Space Mono",monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .scale .bar{flex:1;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--human),#e0a93f 45%,var(--ai1) 100%)}
+
+  /* ---------- cards ---------- */
+  .cards{margin:42px 0 120px;display:flex;flex-direction:column;gap:20px}
+  .card{
+    position:relative;border:1px solid var(--line);border-radius:20px;
+    background:rgba(255,255,255,.55);backdrop-filter:blur(6px);
+    padding:30px 32px;overflow:hidden;
+    opacity:0;transform:translateY(36px);
+    transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
+  }
+  .card.in{opacity:1;transform:none}
+  .card:hover{box-shadow:0 24px 60px -28px rgba(40,20,90,.4)}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent,var(--ai1))}
+  .card-top{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+  .num{font-family:"Unbounded",sans-serif;font-weight:800;font-size:38px;line-height:1;color:var(--accent,var(--ai1));opacity:.92}
+  .card h3{font-family:"Unbounded",sans-serif;font-weight:600;font-size:clamp(20px,2.6vw,27px);letter-spacing:-.01em;flex:1;min-width:220px}
+  .status{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;white-space:nowrap;border:1px solid var(--accent,var(--ai1));color:var(--accent,var(--ai1))}
+  .card p.desc{margin:18px 0 22px;color:#2e2b38;max-width:760px}
+  .aud{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:620px){.aud{grid-template-columns:1fr}}
+  .aud .box{border-radius:14px;padding:16px 18px}
+  .aud .yes{background:linear-gradient(135deg,rgba(123,92,255,.1),rgba(34,211,238,.12))}
+  .aud .no{background:rgba(232,101,74,.1)}
+  .aud .lab{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;color:var(--muted)}
+  .aud .yes .lab{color:var(--ai1)}
+  .aud .no .lab{color:var(--human-deep)}
+  .aud p{font-size:15.5px;line-height:1.5;color:#2e2b38}
+  .hyp{display:inline-block;margin-top:16px;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--human-deep);border:1px dashed var(--human);border-radius:8px;padding:4px 10px}
+
+  /* ---------- prose blocks ---------- */
+  .prose{max-width:680px;margin:0 auto 36px}
+  .prose.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
+  .prose.reveal.in{opacity:1;transform:none}
+  .prose p{margin-bottom:22px;color:#2c2935}
+  .prose b{font-weight:500;color:var(--human-deep)}
+  .pull{font-family:"Unbounded",sans-serif;font-weight:400;font-size:clamp(22px,3.2vw,30px);line-height:1.25;letter-spacing:-.01em;margin:50px auto;max-width:760px;text-align:center}
+  .pull em{font-style:normal;background:linear-gradient(120deg,var(--ai1),var(--ai2));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- audience split ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:40px 0 110px}
+  @media(max-width:720px){.split{grid-template-columns:1fr}}
+  .col{border-radius:20px;padding:30px 30px;opacity:0;transform:translateY(34px);transition:opacity .7s,transform .7s}
+  .col.in{opacity:1;transform:none}
+  .col.fans{background:linear-gradient(160deg,rgba(123,92,255,.12),rgba(34,211,238,.14));border:1px solid rgba(123,92,255,.25)}
+  .col.skeptics{background:linear-gradient(160deg,rgba(232,101,74,.13),rgba(196,61,42,.08));border:1px solid rgba(232,101,74,.28)}
+  .col h4{font-family:"Unbounded",sans-serif;font-weight:600;font-size:21px;margin-bottom:18px}
+  .col ul{list-style:none}
+  .col li{padding:11px 0;border-bottom:1px solid var(--line);font-size:16px;color:#2c2935}
+  .col li:last-child{border-bottom:none}
+  .col li::before{content:"—  ";color:var(--muted)}
+
+  .paradox{border-radius:20px;padding:36px 34px;background:var(--ink);color:var(--paper);margin:0 0 110px;position:relative;overflow:hidden}
+  .paradox::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(123,92,255,.25),rgba(34,211,238,.2),transparent);background-size:200% 100%;animation:sweep 8s linear infinite;pointer-events:none}
+  @keyframes sweep{to{background-position:200% 0}}
+  .paradox .lab{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9d8cff;margin-bottom:16px;position:relative}
+  .paradox p{font-family:"Unbounded",sans-serif;font-weight:400;font-size:clamp(20px,2.8vw,27px);line-height:1.3;position:relative}
+
+  /* ---------- sources ---------- */
+  .sources{border-top:1px solid var(--line);padding:46px 0 30px;font-size:15px;color:var(--muted)}
+  .sources h5{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-bottom:18px}
+  .sources p{margin-bottom:14px;line-height:1.6}
+  .sources b{color:var(--ink);font-weight:500}
+  .tag{font-family:"Space Mono",monospace;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--paper-soft);color:var(--human-deep);border:1px dashed var(--human)}
+  footer{padding:30px 0 70px;font-family:"Space Mono",monospace;font-size:12px;color:var(--muted);line-height:1.7}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    .card,.prose.reveal,.col{opacity:1!important;transform:none!important}
+  }
+
+  @media (max-width:560px){
+    body{font-size:16px}
+    .wrap{padding:0 18px}
+    .lede{font-size:17px}
+    .stat .c, .prose p, .col li, .sources p{overflow-wrap:break-word}
+    .card{padding:24px 20px}
+    .card h3{min-width:0}
+    .num{font-size:30px}
+    .pull{font-size:21px}
+  }
+  img,svg{max-width:100%}
+</style>
+</head>
+<body>
+<div class="atmosphere">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Аналитический разбор · Fashion × AI · горизонт 20 лет</span>
+    <h1 class="title">
+      <span class="l1">Мода в эпоху</span>
+      <span class="l2 grad">искусственного</span>
+      <span class="l2 grad">интеллекта</span>
+    </h1>
+    <p class="lede">Восемь сдвигов, которые ИИ уже запускает в индустрии — от производства до полки. И главный нерв всей истории: <b>синтетическое против человеческого</b>.</p>
+  </div>
+  <div class="scrollcue wrap"><span>↓ листай</span></div>
+</header>
+
+<main class="wrap">
+
+  <div class="stats">
+    <div class="stat"><div class="n">$150–275 млрд</div><div class="c">добавляет ИИ к операционной прибыли индустрии в 2025 — McKinsey</div></div>
+    <div class="stat"><div class="n">$3,14 → 60 млрд</div><div class="c">рынок fashion AI: 2025 → 2034, рост ~39% в год — Heuritech</div></div>
+    <div class="stat"><div class="n">60% / 15%</div><div class="c">руководителей считают ИИ центральным для стратегии — против 15% в 2020 — Unmiss</div></div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">Восемь сдвигов</span>
+      <h2>От «уже происходит»<br>к «возможно, однажды»</h2>
+      <p class="sec-intro">Карточки отсортированы по вероятности. У каждого сдвига — кто примет с восторгом, а кто упрётся. И где факт, а где гипотеза.</p>
+    </div>
+    <div class="scale">
+      <span>уже база</span>
+      <div class="bar"></div>
+      <span>гипотеза</span>
+    </div>
+
+    <div class="cards">
+
+      <article class="card" style="--accent:#22d3ee">
+        <div class="card-top"><span class="num">01</span><h3>Виртуальная примерка и AR-зеркала</h3><span class="status">Уже массово</span></div>
+        <p class="desc">Загружаешь фото — видишь вещь на себе до покупки. Конверсия с AR-примеркой выше на ~65%, возвраты падают (кейс Vue.ai — −22%). Amazon, Google, Zara, Stitch Fix Vision уже в деле.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Массовый онлайн-покупатель 18–35; сами ритейлеры — экономят на возвратах.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Те, кому важна тактильность и поход в магазин как ритуал.</p></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#4ab3e8">
+        <div class="card-top"><span class="num">02</span><h3>ИИ-прогноз трендов</h3><span class="status">Уже база</span></div>
+        <p class="desc">Алгоритмы читают миллионы фото и запросов и предсказывают спрос раньше подиума. Zara, Nike, Shein строят на этом коллекции. ИИ замечает тренд задолго до рантвея.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Fast-fashion, байеры, data-команды, независимые дизайнеры.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Дизайнеры «авторской» школы — видят в этом усреднение и потерю интуиции.</p></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#6f8de0">
+        <div class="card-top"><span class="num">03</span><h3>Генеративный дизайн и цифровое сэмплирование</h3><span class="status">Быстро растёт</span></div>
+        <p class="desc">ИИ генерирует паттерны и палитры, кроит с минимумом отходов, заменяет физические образцы цифровыми. Style3D заявляет о сокращении времени дизайна на ~70%. Стандарт уже для &gt;70% apparel-компаний.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Производственники, sustainability-команды (меньше отходов), стартапы.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Ремесленные бренды, для которых ценность — в ручной работе.</p></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#7b5cff">
+        <div class="card-top"><span class="num">04</span><h3>Персональный стайлинг и шопинг-ассистенты</h3><span class="status">Уже работает</span></div>
+        <p class="desc">ИИ собирает образы под вкус и историю покупок, подбирает размер точнее. «Лень выбирать» превращается в готовый образ за секунды.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Занятой покупатель; e-commerce целиком.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Те, для кого алгоритмическая подача = навязывание (≈48% и так чувствуют, что им «впаривают»).</p></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#9a55e8">
+        <div class="card-top"><span class="num">05</span><h3>ИИ-модели и синтетические кампании</h3><span class="status">Конфликтно</span></div>
+        <p class="desc">Цифровые модели вместо съёмок. Mango (Sunset Dream), Moncler Genius — примеры. Распространяется, но раз за разом ловит волну критики.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Tech-savvy молодёжь; бренды, экономящие на продакшене.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Лоялисты брендов, фотографы и визажисты (риск работы), сторонники diversity.</p></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent:#c05ba8">
+        <div class="card-top"><span class="num">06</span><h3>Аутентичность как новая премия</h3><span class="status">Зарождается</span></div>
+        <p class="desc">Чем больше ИИ-контента, тем дороже «человеческое». «Сделано человеком» становится знаком качества и маркетинговым активом. Aerie на анти-ИИ позиционировании дала +23% к продажам в Q4 2025.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Люкс, нишевые и крафтовые бренды, креативный класс.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Бренды на скорости и объёме; скептики «маркетинга на ностальгии».</p></div>
+        </div>
+        <span class="hyp">◇ гипотеза — сильные сигналы, но не зафиксированный факт</span>
+      </article>
+
+      <article class="card" style="--accent:#d96a55">
+        <div class="card-top"><span class="num">07</span><h3>Маркировка и регулирование ИИ-контента</h3><span class="status">Усиливается</span></div>
+        <p class="desc">Обязательные «знаки доверия», что контент не сгенерирован ИИ. Уже &gt;400 законодательных инициатив по ИИ. 90% людей хотят знать, ИИ ли перед ними изображение.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Регуляторы, потребители, правозащитники.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Бренды, для которых раскрытие ИИ = удар по восприятию (особенно люкс).</p></div>
+        </div>
+        <span class="hyp">◇ частично факт, частично прогноз</span>
+      </article>
+
+      <article class="card" style="--accent:#e8654a">
+        <div class="card-top"><span class="num">08</span><h3>Автономные ИИ-бренды и «текстиль по запросу»</h3><span class="status">Спекулятивно</span></div>
+        <p class="desc">Бренд без дизайнеров-людей, генерация вещи под индивидуальный заказ, цифровая одежда для аватаров. Технически возможно — упирается в доверие, право и желание платить за человеческое.</p>
+        <div class="aud">
+          <div class="box yes"><div class="lab">примут с восторгом</div><p>Early adopters, метавселенные, gaming-аудитория.</p></div>
+          <div class="box no"><div class="lab">скептически</div><p>Массовый рынок; индустрия труда; сторонники «социального одичания».</p></div>
+        </div>
+        <span class="hyp">◇ гипотеза — горизонт 10–20 лет</span>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="prose reveal">
+      <span class="kicker">Как это читать</span>
+      <p><b>Верх таблицы (1–4) — это не будущее, это настоящее.</b> Виртуальная примерка, прогноз трендов, генеративный дизайн и персональный стайлинг уже зашиты в работу Zara, Shein, Nike, Amazon. Спор идёт не «быть или не быть», а «насколько глубоко». Бизнес-вывод: эти четыре направления — гигиена, а не инновация. Кто их игнорирует, проигрывает не имиджево, а в марже.</p>
+      <p><b>Середина (5–6) — зона напряжения,</b> и здесь самое интересное для маркетолога. 2025-й стал переломным: люкс активно пробовал генеративный ИИ в рекламе — и получил по рукам. Valentino (ролик для сумки DeVain) и Gucci (кампания «Primavera») поймали волну «дёшево», «лениво», «не вяжется с ремеслом» — притом что оба честно маркировали контент. Исследование в Journal of Advertising Research формализует механику: ИИ-реклама читается как «сделанная с меньшим усилием», а усилие у люкса = аутентичность.</p>
+    </div>
+
+    <div class="pull"><em>Толерантность к ИИ зависит не от технологии,<br>а от того, что именно он заменяет.</em></div>
+
+    <div class="prose reveal">
+      <p>Отсюда сдвиг №6 — <b>аутентичность как премия.</b> Это уже не благое пожелание: Aerie после анти-ИИ кампании с Памелой Андерсон дала двузначный рост узнаваемости и +23% к продажам. «Человеческое» начинает продаваться лучше синтетического — и это рифмуется с тем, что Accenture называет <b>social rewilding</b>: тяга к текстуре, подлинности и живому контакту.</p>
+      <p><b>Низ таблицы (7–8) — гипотезы.</b> Маркировка почти неизбежна, но скорость и форма непредсказуемы. А полностью автономные ИИ-бренды — пока спекуляция: технически реально, но упирается в доверие, право и желание людей платить именно за человеческое.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="kicker">Аудитория</span>
+      <h2>Кто радуется,<br>а кто упирается</h2>
+    </div>
+    <div class="split">
+      <div class="col fans">
+        <h4>Примут с восторгом</h4>
+        <ul>
+          <li>Покупатели 18–35 — скорость важнее ритуала, сами уже в ИИ</li>
+          <li>Fast-fashion и масс-маркет — прямая экономия и скорость</li>
+          <li>Tech-savvy и метаверс/gaming — для цифровой одежды и ИИ-моделей</li>
+          <li>Sustainability-аудитория — там, где ИИ режет отходы (мода = ~10% мировых выбросов CO₂)</li>
+        </ul>
+      </div>
+      <div class="col skeptics">
+        <h4>Отнесутся скептически</h4>
+        <ul>
+          <li>Лоялисты люкса и крафта — платят именно за человека в уравнении</li>
+          <li>Креативный класс — фотографы, модели, визажисты: угроза работе</li>
+          <li>Сторонники diversity — ИИ-модели и искусственные стандарты красоты</li>
+          <li>«Одичавшие» — осознанно выбирают физический мир и тактильность</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paradox">
+      <div class="lab">Парадокс одного человека</div>
+      <p>Один и тот же человек спокойно использует ИИ-примерку в своём телефоне — и возмущается ИИ-кампанией любимого бренда. Инструмент — да. Душу бренда — нет.</p>
+    </div>
+  </section>
+
+  <section class="sources">
+    <h5>Источники и пометки</h5>
+    <p><b>Из отчётов (Accenture Life Trends 2025, WEF Future of Jobs 2025):</b> усталость от ИИ-контента и тяга к подлинному (social rewilding), 90% хотят знать про ИИ-генерацию, ~48% чувствуют навязанный шопинг, &gt;400 ИИ-законов, тревога вокруг искусственных стандартов красоты.</p>
+    <p><b>Из веба:</b> рынок 3,14→60 млрд и отходы индустрии — Heuritech · McKinsey 150–275 млрд и AR +65% — WearView · 60%/15% и $1,5 млрд инвестиций — Unmiss · Vue.ai −22% — Glance AI · Style3D −70% и Statista &gt;70% — Style3D · Stitch Fix Vision — Digital Commerce 360 · кейсы Valentino, Gucci, Guess, J.Crew, Mango, Aerie/+23%, цитата Getty Images — Glossy, The Cut Fashion Academy, Botika · механика «усилие = аутентичность» — Journal of Advertising Research, 2025.</p>
+    <p><span class="tag">◇ гипотеза</span> &nbsp;Сдвиг №6 как формирующаяся премия, весь №8 и «парадокс одного человека» — это интерпретация сигналов, а не зафиксированный факт.</p>
+  </section>
+
+  <footer>
+    Дисклеймер: цифры взяты из открытых источников на момент сбора и могут расходиться между аналитиками — fashion AI считают по-разному. Перед публикацией ключевые показатели стоит сверить.
+  </footer>
+
+</main>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.18, rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll('.card,.prose.reveal,.col').forEach((el,i)=>{
+    el.style.transitionDelay = (el.classList.contains('card') ? (i%2)*.08 : 0)+'s';
+    io.observe(el);
+  });
+
+  // subtle parallax on the ambient blobs
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY;
+      const b1=document.querySelector('.b1'),b2=document.querySelector('.b2'),b3=document.querySelector('.b3');
+      if(b1)b1.style.translate='0 '+(y*.05)+'px';
+      if(b2)b2.style.translate='0 '+(y*-.04)+'px';
+      if(b3)b3.style.translate='0 '+(y*.03)+'px';
+      ticking=false;
+    });
+  },{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Marketing Calculator — IRA AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0abab5;        /* Tiffany blue (фон) */
+    --green-deep:#0a8f8b;   /* глубокая бирюза (панели) */
+    --green-bright:#7ee8e2; /* светлый тиффани */
+    --pink:#e6357a;         /* тёмно-розовый / фуксия (кнопки) */
+    --pink-bright:#ff5fa2;  /* ярко-розовый hover */
+    --cream:#fff7f3;        /* пломбир (карточки) */
+    --cream-2:#ffe9f0;      /* пастельно-розовый */
+    --ink:#0c4a47;          /* тёмная бирюза (текст) */
+    --muted:#6a8f8c;
+    --profit:#0a8f5a;
+    --loss:#d63060;
+    --shadow:rgba(8,90,86,.40);
+  }
+  /* летние пастельные «капли» на фоне */
+  body::before,body::after{content:'';position:fixed;border-radius:50%;z-index:0;pointer-events:none;filter:blur(2px);opacity:.55}
+  body::before{width:320px;height:320px;background:radial-gradient(circle,#ffd2e8,transparent 70%);top:-70px;right:7%;}
+  body::after{width:280px;height:280px;background:radial-gradient(circle,#fff6c9,transparent 70%);bottom:5%;left:-70px;}
+  .grid,header,.footer{position:relative;z-index:1}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-font-smoothing:antialiased}
+  body{
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    background:linear-gradient(160deg,#1ec9c3 0%,#0abab5 45%,#0aa39e 100%);
+    color:#fff;
+    padding:32px clamp(16px,4vw,56px) 64px;
+    min-height:100vh;
+  }
+  .disp{font-family:'Unbounded',system-ui,sans-serif}
+
+  /* ---------- HEADER ---------- */
+  header{margin-bottom:36px;position:relative}
+  .logo{font-family:'Unbounded';font-weight:900;font-size:28px}
+  .tag{font-style:italic;font-size:16px;margin-top:18px;opacity:.92;font-family:'Space Grotesk'}
+  .h1{
+    font-family:'Unbounded';font-weight:900;line-height:.92;
+    font-size:clamp(48px,9vw,128px);
+    text-shadow:6px 7px 0 var(--shadow);
+    margin-top:10px;letter-spacing:-2px;
+  }
+  .h1 .line2{color:#fff}
+  .h1 .sun{color:#ffe44d;font-size:.5em;vertical-align:super;text-shadow:0 0 24px rgba(255,228,77,.8);animation:spin 14s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .menu{position:absolute;top:0;right:0;text-align:right;font-size:14px;line-height:1.9;opacity:.95}
+
+  /* ---------- LAYOUT ---------- */
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--green-deep);border-radius:22px;padding:26px}
+  .panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .panel-title h2{font-family:'Unbounded';font-weight:700;font-size:19px}
+  .budget-pill{background:#fff;color:var(--ink);font-family:'Unbounded';font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px}
+
+  /* ---------- INPUTS ---------- */
+  .field{margin-bottom:16px}
+  .field.full{grid-column:1/-1}
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;opacity:.95}
+  input[type=number]{
+    width:100%;background:var(--green);border:none;border-radius:12px;
+    color:#fff;font-family:'Space Grotesk';font-weight:700;font-size:18px;
+    padding:13px 14px;outline:2px solid transparent;transition:.15s;
+  }
+  input[type=number]:focus{outline:2px solid var(--green-bright);background:#0f8a4e}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  input[type=range]{width:100%;accent-color:var(--pink);margin:6px 0 4px;height:6px}
+  .slider-row{margin-bottom:18px}
+  .slider-row .lab{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:4px}
+  .hint{font-size:11px;opacity:.7;margin-top:4px}
+
+  .btns{display:flex;gap:10px;margin-top:8px}
+  .btn{flex:1;border:none;border-radius:12px;font-family:'Unbounded';font-weight:600;font-size:14px;padding:14px;cursor:pointer;transition:.18s}
+  .btn-main{background:var(--pink);color:#fff;box-shadow:0 5px 0 #b51f5e}
+  .btn-main:hover{background:var(--pink-bright);box-shadow:0 5px 0 #cf2e72;transform:translateY(-1px)}
+  .btn-main:active{transform:translateY(3px);box-shadow:0 2px 0 #b51f5e}
+  .btn-ghost{flex:0 0 auto;background:#fff;color:var(--pink);border:2px solid var(--pink);padding:14px 18px}
+  .btn-ghost:hover{background:var(--cream-2)}
+  .scen{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:18px 0 6px}
+  .scen button{background:#fff;border:2px solid var(--pink);color:var(--pink);border-radius:10px;padding:10px 4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk';transition:.15s}
+  .scen button:hover{background:var(--pink);color:#fff}
+  .formula{font-size:11px;opacity:.65;line-height:1.6;margin-top:16px}
+
+  /* ---------- RESULTS ---------- */
+  .results{background:var(--green-deep);border-radius:22px;padding:26px}
+  .verdict-card{background:var(--green-bright);border-radius:16px;padding:22px 24px;margin-bottom:18px;position:relative;overflow:hidden}
+  .verdict-card .small{font-size:13px;opacity:.9;font-weight:700}
+  .verdict-card .big{font-family:'Unbounded';font-weight:900;font-size:clamp(40px,6vw,72px);line-height:1;margin-top:6px}
+  .verdict-card .note{position:absolute;top:22px;right:24px;text-align:right;font-size:12px;font-weight:700;max-width:230px;line-height:1.4;opacity:.85}
+  @media(max-width:560px){.verdict-card .note{position:static;text-align:left;margin-top:12px;max-width:none}}
+
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:780px){.cards{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--cream);color:var(--ink);border-radius:14px;padding:16px 16px 18px}
+  .card.span2{grid-column:span 2}
+  .card.span4{grid-column:1/-1}
+  .card .k{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+  .card .v{font-family:'Unbounded';font-weight:700;font-size:clamp(22px,2.4vw,30px);margin:8px 0 4px;line-height:1}
+  .card .d{font-size:11px;color:var(--muted);line-height:1.4}
+  .card.hero .v{color:var(--profit)}
+  .card.hero.neg .v{color:var(--loss)}
+
+  .section-label{font-family:'Unbounded';font-weight:700;font-size:16px;margin:24px 0 12px}
+
+  /* funnel */
+  .funnel{background:var(--cream);border-radius:14px;padding:18px;color:var(--ink)}
+  .frow{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .frow:last-child{margin-bottom:0}
+  .frow .flab{flex:0 0 130px;font-size:12px;font-weight:700}
+  .fbar-wrap{flex:1;background:var(--cream-2);border-radius:8px;overflow:hidden;height:30px}
+  .fbar{height:100%;background:linear-gradient(90deg,var(--green) 0%,var(--pink) 140%);border-radius:8px;display:flex;align-items:center;padding:0 10px;color:#fff;font-weight:700;font-size:13px;font-family:'Unbounded';transition:width .4s;white-space:nowrap}
+  .frow .fpct{flex:0 0 56px;text-align:right;font-size:12px;font-weight:700;color:var(--muted)}
+
+  /* advice */
+  .advice{display:flex;gap:22px;margin-top:24px;align-items:flex-start}
+  @media(max-width:680px){.advice{flex-direction:column;gap:12px}}
+  .advice .alabel{font-family:'Unbounded';font-weight:700;font-size:20px;flex:0 0 160px;line-height:1.1}
+  .advice .alist{flex:1;display:flex;flex-direction:column;gap:10px}
+  .tip{background:var(--cream);color:var(--ink);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.45}
+  .tip b{color:var(--profit)}
+  .tip.warn b{color:var(--loss)}
+
+  .footer{margin-top:30px;font-size:12px;opacity:.7}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">©26 · IRA AI 🍦</div>
+  <div class="menu disp" style="font-weight:400">
+    Performance Strategy<br>Funnel Math<br>ROAS &amp; LTV<br>Budget Planning<br>Unit Economics
+  </div>
+  <div class="tag">Маркетинг — это шум. Мы измеряем сигнал. Летом — со вкусом фисташки.</div>
+  <div class="h1"><div>Digital <span class="sun">☀︎</span></div><div class="line2">Calculator</div></div>
+</header>
+
+<div class="grid">
+
+  <!-- ============ INPUTS ============ -->
+  <div class="panel">
+    <div class="panel-title">
+      <h2>Вводные кампании</h2>
+      <div class="budget-pill" id="budgetPill">0 ₽</div>
+    </div>
+
+    <div class="slider-row">
+      <div class="lab"><span>Рекламный бюджет</span><span style="opacity:.6">slider</span></div>
+      <input type="range" id="budgetSlider" min="10000" max="5000000" step="10000" value="1140000">
+      <input type="number" id="budget" value="1140000">
+    </div>
+
+    <div class="two">
+      <div class="field"><label>Средний CPC, ₽</label><input type="number" id="cpc" value="58"></div>
+      <div class="field"><label>CPM, ₽ (за 1000 показов)</label><input type="number" id="cpm" value="320"></div>
+    </div>
+
+    <div class="two">
+      <div class="field"><label>Конверсия в заявку, %</label><input type="number" id="cr1" value="6.4" step="0.1"></div>
+      <div class="field"><label>Заявка → продажа, %</label><input type="number" id="cr2" value="23" step="0.1"></div>
+    </div>
+
+    <div class="two">
+      <div class="field"><label>Средний чек, ₽</label><input type="number" id="check" value="52000"></div>
+      <div class="field"><label>Маржинальность, %</label><input type="number" id="margin" value="48"></div>
+    </div>
+
+    <div class="two">
+      <div class="field"><label>Повторных покупок (LTV ×)</label><input type="number" id="repeat" value="1.6" step="0.1"></div>
+      <div class="field"><label>Налог ИП, %</label><input type="number" id="tax" value="6" step="0.1"></div>
+    </div>
+
+    <div class="two">
+      <div class="field"><label>Доп. расходы, ₽</label><input type="number" id="extra" value="50000"></div>
+      <div class="field"><label>Цель: продаж, шт</label><input type="number" id="goal" value="400"></div>
+    </div>
+
+    <div class="scen">
+      <button data-s="pess">😬 Пессимизм</button>
+      <button data-s="base">🎯 База</button>
+      <button data-s="opt">🚀 Оптимизм</button>
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-main" id="better">Сценарий получше</button>
+      <button class="btn btn-ghost" id="reset">Сброс</button>
+    </div>
+
+    <div class="formula">
+      Показы = бюджет / CPM × 1000 · Клики = бюджет / CPC · Заявки = клики × CR1 ·
+      Продажи = заявки × CR2 · Выручка = продажи × чек · LTV-выручка = выручка × повтор ·
+      Прибыль = LTV-выручка × маржа − бюджет − расходы − налог.
+    </div>
+  </div>
+
+  <!-- ============ RESULTS ============ -->
+  <div class="results">
+
+    <div class="verdict-card">
+      <div class="small">Прогноз кампании</div>
+      <div class="big disp" id="verdict">—</div>
+      <div class="note" id="verdictNote"></div>
+    </div>
+
+    <!-- funnel -->
+    <div class="cards">
+      <div class="card"><div class="k">Показы</div><div class="v" id="impr">—</div><div class="d">Охват из бюджета по CPM</div></div>
+      <div class="card"><div class="k">Клики</div><div class="v" id="clicks">—</div><div class="d">Трафик из бюджета</div></div>
+      <div class="card"><div class="k">Заявки</div><div class="v" id="leads">—</div><div class="d">Лиды с посадочной</div></div>
+      <div class="card"><div class="k">Продажи</div><div class="v" id="sales">—</div><div class="d">Закрытых сделок</div></div>
+    </div>
+
+    <div class="section-label">Стоимость и эффективность</div>
+    <div class="cards">
+      <div class="card"><div class="k">CPL · цена заявки</div><div class="v" id="cpl">—</div><div class="d">Бюджет / заявки</div></div>
+      <div class="card"><div class="k">CPA · цена продажи</div><div class="v" id="cpa">—</div><div class="d">Бюджет / продажи</div></div>
+      <div class="card"><div class="k">ROAS</div><div class="v" id="roas">—</div><div class="d">Выручка на 1 ₽ рекламы</div></div>
+      <div class="card"><div class="k">ДРР</div><div class="v" id="drr">—</div><div class="d">Реклама / выручка</div></div>
+    </div>
+
+    <div class="section-label">Деньги и здоровье воронки</div>
+    <div class="cards">
+      <div class="card span2"><div class="k">Выручка (с повторными)</div><div class="v" id="revenue">—</div><div class="d">Продажи × чек × LTV-множитель</div></div>
+      <div class="card"><div class="k">Break-even CPA</div><div class="v" id="becpa">—</div><div class="d">Дороже покупать нельзя</div></div>
+      <div class="card"><div class="k">LTV / CAC</div><div class="v" id="ltvcac">—</div><div class="d">Норма ≥ 3</div></div>
+      <div class="card hero span2" id="profitCard"><div class="k">Чистая прибыль (после налога)</div><div class="v" id="profit">—</div><div class="d">После рекламы, расходов и налога ИП</div></div>
+      <div class="card"><div class="k">Окупаемость</div><div class="v" id="payback">—</div><div class="d">Продаж до возврата бюджета</div></div>
+      <div class="card"><div class="k">Бюджет под цель</div><div class="v" id="goalBudget">—</div><div class="d" id="goalDesc">Чтобы получить цель по продажам</div></div>
+    </div>
+
+    <div class="section-label">Воронка</div>
+    <div class="funnel" id="funnel"></div>
+
+    <div class="advice">
+      <div class="alabel">Что сказать клиенту</div>
+      <div class="alist" id="tips"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">Файл живёт у тебя на компьютере. Меняй вводные — экономика пересчитывается на лету. © IRA AI · 2026</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const ids = ['budget','cpc','cpm','cr1','cr2','check','margin','repeat','tax','extra','goal'];
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const money = n => fmt(n) + ' ₽';
+
+const DEFAULTS = {budget:1140000,cpc:58,cpm:320,cr1:6.4,cr2:23,check:52000,margin:48,repeat:1.6,tax:6,extra:50000,goal:400};
+
+function val(id){return parseFloat($(id).value)||0;}
+
+function calc(){
+  const budget=val('budget'), cpc=val('cpc'), cpm=val('cpm'),
+        cr1=val('cr1')/100, cr2=val('cr2')/100, check=val('check'),
+        margin=val('margin')/100, repeat=val('repeat')||1, tax=val('tax')/100,
+        extra=val('extra'), goal=val('goal');
+
+  const impressions = cpm>0 ? budget/cpm*1000 : 0;
+  const clicks = cpc>0 ? budget/cpc : 0;
+  const leads = clicks*cr1;
+  const sales = leads*cr2;
+  const cpl = leads>0 ? budget/leads : 0;
+  const cpa = sales>0 ? budget/sales : 0;
+
+  const revenue = sales*check*repeat;            // с учётом повторных
+  const grossMargin = revenue*margin;            // валовая маржа
+  const roas = budget>0 ? revenue/budget : 0;
+  const drr = revenue>0 ? budget/revenue*100 : 0;
+
+  const profitBeforeTax = grossMargin - budget - extra;
+  const taxAmount = profitBeforeTax>0 ? profitBeforeTax*tax : 0; // налог с прибыли (упрощённо)
+  const profit = profitBeforeTax - taxAmount;
+
+  // break-even CPA: маржа с одной продажи (с учётом LTV)
+  const marginPerSale = check*repeat*margin;
+  const becpa = marginPerSale;
+  const ltvcac = cpa>0 ? marginPerSale/cpa : 0;
+
+  // окупаемость: сколько продаж нужно чтобы маржа покрыла бюджет+расходы
+  const payback = marginPerSale>0 ? (budget+extra)/marginPerSale : 0;
+
+  // бюджет под цель по продажам
+  const budgetPerSale = sales>0 ? budget/sales : 0;
+  const goalBudget = budgetPerSale*goal;
+
+  return {budget,impressions,clicks,leads,sales,cpl,cpa,revenue,grossMargin,
+          roas,drr,profit,profitBeforeTax,taxAmount,becpa,ltvcac,payback,goalBudget,marginPerSale,goal};
+}
+
+function verdictOf(r){
+  if(r.profit>0 && r.roas>=2 && r.ltvcac>=3) return {t:'Окупается',c:'#0b7a3e',note:'Здоровая воронка: ROAS выше 2, LTV/CAC ≥ 3. Можно масштабировать бюджет — но следи, чтобы CPC не рос быстрее конверсии.'};
+  if(r.profit>0) return {t:'В плюсе',c:'#0b7a3e',note:'Кампания прибыльная, но запас тонкий. Усиливай конверсию посадочной или средний чек прежде, чем заливать бюджет.'};
+  if(r.profit>-r.budget*0.15) return {t:'На грани',c:'#b8860b',note:'Почти ноль. Малейший рост CPC или просадка конверсии — и уходишь в минус. Сначала чини юнит-экономику, потом покупай трафик.'};
+  return {t:'Сливает',c:'#c0392b',note:'Экономика не сходится: маржа не покрывает рекламу. Не увеличивай бюджет — разбирай воронку: дорогой клик, слабая посадочная или низкая конверсия в продажу.'};
+}
+
+function render(){
+  const r = calc();
+  $('budgetPill').textContent = money(r.budget);
+
+  $('impr').textContent = fmt(r.impressions);
+  $('clicks').textContent = fmt(r.clicks);
+  $('leads').textContent = fmt(r.leads);
+  $('sales').textContent = fmt(r.sales);
+
+  $('cpl').textContent = money(r.cpl);
+  $('cpa').textContent = money(r.cpa);
+  $('roas').textContent = r.roas.toFixed(2)+'x';
+  $('drr').textContent = r.drr.toFixed(1)+'%';
+
+  $('revenue').textContent = money(r.revenue);
+  $('becpa').textContent = money(r.becpa);
+  $('ltvcac').textContent = r.ltvcac.toFixed(2);
+  $('profit').textContent = money(r.profit);
+  $('payback').textContent = fmt(r.payback)+' шт';
+  $('goalBudget').textContent = money(r.goalBudget);
+  $('goalDesc').textContent = 'Чтобы получить '+fmt(r.goal)+' продаж';
+
+  const pc = $('profitCard');
+  pc.classList.toggle('neg', r.profit<0);
+
+  const v = verdictOf(r);
+  $('verdict').textContent = v.t;
+  $('verdict').style.color = v.c==='#0b7a3e' ? '#0c4a47' : v.c;
+  document.querySelector('.verdict-card').style.background = r.profit>0?'var(--green-bright)':(r.profit>-r.budget*0.15?'#ffd98a':'#ffb3c9');
+  $('verdictNote').textContent = v.note;
+
+  renderFunnel(r);
+  renderTips(r);
+}
+
+function renderFunnel(r){
+  const stages = [
+    {l:'Показы', v:r.impressions},
+    {l:'Клики', v:r.clicks},
+    {l:'Заявки', v:r.leads},
+    {l:'Продажи', v:r.sales},
+  ];
+  const max = stages[0].v || 1;
+  let html='';
+  stages.forEach((s,i)=>{
+    const w = Math.max((s.v/max)*100, s.v>0?6:0);
+    const pct = i===0 ? '100%' : (stages[i-1].v>0 ? (s.v/stages[i-1].v*100).toFixed(1)+'%' : '0%');
+    html+=`<div class="frow">
+      <div class="flab">${s.l}</div>
+      <div class="fbar-wrap"><div class="fbar" style="width:${w}%">${fmt(s.v)}</div></div>
+      <div class="fpct">${pct}</div>
+    </div>`;
+  });
+  $('funnel').innerHTML = html;
+}
+
+function renderTips(r){
+  const tips=[];
+  // 1 main economics
+  if(r.profit>0){
+    tips.push(`<div class="tip">Экономика сходится: текущий CPA <b>${money(r.cpa)}</b>, запас до точки безубыточности <b>${money(r.becpa-r.cpa)}</b>.</div>`);
+  } else {
+    tips.push(`<div class="tip warn">CPA <b>${money(r.cpa)}</b> уже дороже потолка <b>${money(r.becpa)}</b>. Каждая продажа в убыток — режь стоимость трафика или поднимай конверсию.</div>`);
+  }
+  // 2 LTV/CAC
+  if(r.ltvcac>=3) tips.push(`<div class="tip">LTV/CAC = <b>${r.ltvcac.toFixed(1)}</b> — воронка здоровая, можно тестировать масштабирование бюджета.</div>`);
+  else if(r.ltvcac>=1) tips.push(`<div class="tip">LTV/CAC = <b>${r.ltvcac.toFixed(1)}</b> — ниже нормы (3). Работай над повторными покупками и средним чеком, а не только над трафиком.</div>`);
+  else tips.push(`<div class="tip warn">LTV/CAC = <b>${r.ltvcac.toFixed(1)}</b> — привлечение дороже, чем приносит клиент. Это убыточная модель.</div>`);
+  // 3 ДРР
+  tips.push(`<div class="tip">ДРР <b>${r.drr.toFixed(1)}%</b>${r.drr<30?' — комфортно для большинства ниш.':' — высоковато, реклама съедает выручку. Норма обычно 10–30%.'}</div>`);
+  // 4 funnel reality
+  tips.push(`<div class="tip">Воронка: <b>${fmt(r.leads)}</b> заявок и <b>${fmt(r.sales)}</b> продаж. Бюджет под цель в ${fmt(r.goal)} продаж — <b>${money(r.goalBudget)}</b>.</div>`);
+  $('tips').innerHTML = tips.join('');
+}
+
+// scenarios tweak conversions/cpc
+const SCEN = {
+  pess:{cr1:4.2,cr2:16,cpc:78,repeat:1.2},
+  base:{cr1:6.4,cr2:23,cpc:58,repeat:1.6},
+  opt :{cr1:9.0,cr2:31,cpc:44,repeat:2.2},
+};
+document.querySelectorAll('.scen button').forEach(b=>{
+  b.onclick=()=>{const s=SCEN[b.dataset.s];for(const k in s)$(k).value=s[k];render();};
+});
+
+$('better').onclick=()=>{
+  // improve weakest lever a little
+  $('cr1').value=(val('cr1')*1.15).toFixed(1);
+  $('cr2').value=(val('cr2')*1.1).toFixed(1);
+  $('cpc').value=Math.round(val('cpc')*0.9);
+  render();
+};
+$('reset').onclick=()=>{for(const k in DEFAULTS)$(k).value=DEFAULTS[k];$('budgetSlider').value=DEFAULTS.budget;render();};
+
+// link slider <-> budget
+$('budgetSlider').oninput=()=>{$('budget').value=$('budgetSlider').value;render();};
+$('budget').oninput=()=>{const v=val('budget');if(v>=10000&&v<=5000000)$('budgetSlider').value=v;render();};
+
+ids.forEach(id=>{if(id!=='budget')$(id).addEventListener('input',render);});
+
+render();
+</script>
+</body>
+</html>

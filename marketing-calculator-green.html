@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Marketing Calculator — IRA AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0c8a45;
+    --green-deep:#076835;
+    --green-dark:#054a26;
+    --cream:#f6f1e7;
+    --cream-2:#fbf8f1;
+    --ink:#10261a;
+    --muted:#5f7a68;
+    --accent:#0a6c38;
+    --good:#0a8f3c;
+    --bad:#c8341f;
+    --line:rgba(255,255,255,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background:var(--green);
+    background:radial-gradient(120% 120% at 80% -10%, #11a352 0%, var(--green) 38%, var(--green-deep) 100%);
+    color:var(--cream);
+    min-height:100vh;
+    padding:28px clamp(16px,3vw,48px) 64px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- HEADER ---------- */
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+  .logo{font-family:'Unbounded';font-weight:900;font-size:34px;line-height:1}
+  .nav{text-align:right;font-family:'Unbounded';font-weight:600;font-size:14px;line-height:2;opacity:.92}
+  .tagline{font-style:italic;font-size:17px;margin:26px 0 4px;opacity:.92;font-family:'Space Grotesk'}
+  h1{
+    font-family:'Unbounded';font-weight:900;
+    font-size:clamp(48px,9vw,128px);
+    line-height:.92;letter-spacing:-.02em;color:var(--cream);
+    text-shadow:6px 7px 0 var(--green-dark);
+    margin:6px 0 36px;
+  }
+  h1 .l2{display:block;color:var(--cream-2)}
+
+  /* ---------- LAYOUT ---------- */
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--green-deep);border-radius:22px;padding:26px}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .panel-head h2{font-family:'Unbounded';font-weight:800;font-size:19px}
+  .badge{background:var(--cream);color:var(--green-deep);font-family:'Unbounded';font-weight:800;
+    font-size:14px;padding:7px 14px;border-radius:30px}
+
+  /* ---------- INPUTS ---------- */
+  .field{margin-bottom:16px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;
+    margin-bottom:7px;opacity:.92}
+  label .hint{font-style:italic;font-weight:400;font-size:11px;opacity:.7}
+  input[type=number]{
+    width:100%;background:var(--accent);border:1px solid var(--line);color:var(--cream);
+    font-family:'Space Grotesk';font-weight:600;font-size:20px;padding:12px 14px;border-radius:12px;
+  }
+  input[type=number]:focus{outline:none;border-color:var(--cream)}
+  input[type=range]{
+    -webkit-appearance:none;width:100%;height:6px;border-radius:6px;
+    background:linear-gradient(90deg,var(--cream) var(--fill,40%),rgba(255,255,255,.25) var(--fill,40%));
+    margin:6px 0 4px;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--cream);
+    border:3px solid var(--green-deep);box-shadow:0 0 0 1px var(--cream);
+  }
+
+  .scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 14px}
+  .scn{background:var(--accent);border:1px solid var(--line);color:var(--cream);
+    font-family:'Space Grotesk';font-weight:600;font-size:13px;padding:11px 6px;border-radius:11px;cursor:pointer;transition:.15s}
+  .scn:hover{background:var(--green)}
+  .scn.active{background:var(--cream);color:var(--green-deep)}
+  .actions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:6px}
+  .btn{font-family:'Unbounded';font-weight:800;font-size:15px;padding:15px;border-radius:13px;border:none;cursor:pointer}
+  .btn-main{background:var(--cream);color:var(--green-deep)}
+  .btn-reset{background:var(--accent);color:var(--cream);border:1px solid var(--line);padding:15px 20px}
+  .formula{font-size:11px;line-height:1.6;opacity:.6;margin-top:16px}
+
+  /* ---------- RESULTS ---------- */
+  .results{display:flex;flex-direction:column;gap:18px}
+  .verdict{background:var(--cream);color:var(--green-deep);border-radius:22px;padding:26px 30px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+  .verdict .small{font-size:14px;color:var(--muted);font-weight:600;margin-bottom:6px}
+  .verdict .word{font-family:'Unbounded';font-weight:900;font-size:clamp(42px,6vw,68px);line-height:.9}
+  .verdict.win .word{color:var(--good)}
+  .verdict.lose .word{color:var(--bad)}
+  .verdict .note{font-size:13px;font-weight:600;text-align:right;max-width:240px;line-height:1.45;color:var(--muted)}
+
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1280px){.cards{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.cards{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--cream-2);color:var(--ink);border-radius:16px;padding:18px 18px 16px;
+    border:1px solid rgba(12,138,69,.1)}
+  .card .k{font-family:'Unbounded';font-weight:700;font-size:11px;letter-spacing:.04em;color:var(--green);text-transform:uppercase}
+  .card .v{font-family:'Space Grotesk';font-weight:700;font-size:clamp(22px,2.4vw,30px);line-height:1.05;margin:9px 0 6px}
+  .card .d{font-size:11.5px;color:var(--muted);line-height:1.4}
+  .card.hero{background:var(--ink);color:var(--cream-2)}
+  .card.hero .k{color:#7fe3a6}
+  .card.hero .v{font-size:clamp(26px,3vw,36px)}
+  .card.hero.lose .v{color:#ff8d7a}
+  .card.hero.win .v{color:#7fe3a6}
+  .card .v small{font-size:.55em;font-weight:600;color:var(--muted)}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:8px}
+  .pill.ok{background:rgba(10,143,60,.15);color:var(--good)}
+  .pill.warn{background:rgba(214,140,0,.18);color:#9a6b00}
+  .pill.bad{background:rgba(200,52,31,.15);color:var(--bad)}
+
+  /* ---------- INSIGHTS ---------- */
+  .insights{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start;margin-top:4px}
+  @media(max-width:700px){.insights{grid-template-columns:1fr}}
+  .insights h3{font-family:'Unbounded';font-weight:800;font-size:24px;line-height:1.05;color:var(--cream)}
+  .notes{display:flex;flex-direction:column;gap:10px}
+  .notes .row{background:var(--cream-2);color:var(--ink);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.45}
+  .notes .row b{color:var(--green-deep)}
+  .foot{margin-top:40px;text-align:center;font-size:12px;opacity:.6;font-family:'Unbounded';font-weight:400}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">©26</div>
+    <div class="nav">
+      Performance Strategy<br>LTV &amp; Unit Economics<br>ROAS / ДРР Forecast<br>Budget Planning<br>Sales Funnel
+    </div>
+  </div>
+
+  <div class="tagline">Marketing is noise. We measure signal.</div>
+  <h1>Digital<span class="l2">Marketing Calculator</span></h1>
+
+  <div class="grid">
+
+    <!-- ============ INPUTS ============ -->
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Вводные кампании</h2>
+        <span class="badge" id="budgetBadge">1 140 000 ₽</span>
+      </div>
+
+      <div class="field">
+        <label>Рекламный бюджет <span class="hint">slider</span></label>
+        <input type="range" id="budgetRange" min="50000" max="3000000" step="10000" value="1140000">
+        <input type="number" id="budget" value="1140000">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>CTR, %</label>
+          <input type="number" id="ctr" value="1.2" step="0.1">
+        </div>
+        <div class="field">
+          <label>Средний CPC, ₽</label>
+          <input type="number" id="cpc" value="58">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Конверсия в заявку, %</label>
+          <input type="number" id="cr1" value="6.4" step="0.1">
+        </div>
+        <div class="field">
+          <label>Заявка в продажу, %</label>
+          <input type="number" id="cr2" value="23" step="0.1">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Средний чек, ₽</label>
+          <input type="number" id="check" value="52000">
+        </div>
+        <div class="field">
+          <label>Маржинальность, %</label>
+          <input type="number" id="margin" value="48">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Покупок на клиента <span class="hint">LTV</span></label>
+          <input type="number" id="repeat" value="1" step="0.1">
+        </div>
+        <div class="field">
+          <label>Доп. расходы, ₽</label>
+          <input type="number" id="extra" value="50000">
+        </div>
+      </div>
+
+      <div class="scenarios">
+        <button class="scn" data-scn="pess">Пессимистичный</button>
+        <button class="scn active" data-scn="real">Реалистичный</button>
+        <button class="scn" data-scn="opt">Оптимистичный</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-main" id="better">Сценарий получше</button>
+        <button class="btn btn-reset" id="reset">Сброс</button>
+      </div>
+
+      <p class="formula">
+        Показы = клики / CTR · CPM = бюджет / показы × 1000 · клики = бюджет / CPC ·
+        заявки = клики × CR · продажи = заявки × конверсия продаж · ДРР = бюджет / выручка ·
+        LTV = чек × маржа × покупки · прибыль = выручка × маржа − бюджет − расходы.
+      </p>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div class="results">
+
+      <div class="verdict win" id="verdict">
+        <div>
+          <div class="small">Прогноз кампании</div>
+          <div class="word" id="verdictWord">Окупается</div>
+        </div>
+        <div class="note">Живая экономика: меняй вводные и сразу смотри, где ломается прибыль.</div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><div class="k">Показы</div><div class="v" id="impr">—</div><div class="d">Сколько раз увидят объявление</div></div>
+        <div class="card"><div class="k">Клики</div><div class="v" id="clicks">—</div><div class="d">Трафик из бюджета</div></div>
+        <div class="card"><div class="k">Заявки</div><div class="v" id="leads">—</div><div class="d">Лидов с посадочной</div></div>
+        <div class="card"><div class="k">Продажи</div><div class="v" id="sales">—</div><div class="d">Прогноз закрытых сделок</div></div>
+
+        <div class="card"><div class="k">CPM</div><div class="v" id="cpm">—</div><div class="d">Цена 1000 показов</div></div>
+        <div class="card"><div class="k">CPL</div><div class="v" id="cpl">—</div><div class="d">Цена одной заявки</div></div>
+        <div class="card"><div class="k">CPA / CAC</div><div class="v" id="cpa">—</div><div class="d">Цена одной продажи</div></div>
+        <div class="card"><div class="k">ДРР</div><div class="v" id="drr">—</div><div class="d">Доля рекламы в выручке</div></div>
+
+        <div class="card"><div class="k">ROAS</div><div class="v" id="roas">—</div><div class="d">Выручка на 1 ₽ рекламы</div></div>
+        <div class="card"><div class="k">ROMI</div><div class="v" id="romi">—</div><div class="d">Возврат на маркетинг</div></div>
+        <div class="card"><div class="k">Break-even CPA</div><div class="v" id="becpa">—</div><div class="d">Дороже покупать нельзя</div></div>
+        <div class="card"><div class="k">Точка нуля</div><div class="v" id="beunits">—</div><div class="d">Продаж до окупаемости</div></div>
+
+        <div class="card"><div class="k">LTV</div><div class="v" id="ltv">—</div><div class="d">Сколько даст клиент за жизнь</div></div>
+        <div class="card"><div class="k">LTV : CAC</div><div class="v" id="ltvcac">—</div><div class="d">Здоровье юнит-экономики<div class="pill" id="ltvPill"></div></div></div>
+        <div class="card"><div class="k">Выручка</div><div class="v" id="revenue">—</div><div class="d">Продажи × средний чек</div></div>
+        <div class="card hero win" id="profitCard"><div class="k">Прибыль</div><div class="v" id="profit">—</div><div class="d">После рекламы и расходов</div></div>
+      </div>
+
+      <div class="insights">
+        <h3>Что сказать маркетологу</h3>
+        <div class="notes" id="notes"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="foot">IRA AI · Digital Marketing Calculator · файл живёт у тебя на компьютере</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const ids = ['budget','ctr','cpc','cr1','cr2','check','margin','repeat','extra'];
+  const fmt = n => Math.round(n).toLocaleString('ru-RU');
+  const fmt1 = n => n.toLocaleString('ru-RU',{maximumFractionDigits:1});
+
+  const DEFAULTS = {budget:1140000,ctr:1.2,cpc:58,cr1:6.4,cr2:23,check:52000,margin:48,repeat:1,extra:50000};
+
+  // scenario multipliers applied to conversions & cpc
+  const SCN = {
+    pess:{cr1:0.7, cr2:0.7, cpc:1.25},
+    real:{cr1:1,   cr2:1,   cpc:1},
+    opt: {cr1:1.3, cr2:1.3, cpc:0.85}
+  };
+  let baseReal = {...DEFAULTS};
+  let activeScn = 'real';
+
+  function syncRange(){
+    const b = +$('budget').value;
+    $('budgetRange').value = Math.min(3000000, Math.max(50000, b));
+    const pct = ((b-50000)/(3000000-50000))*100;
+    $('budgetRange').style.setProperty('--fill', pct+'%');
+    $('budgetBadge').textContent = fmt(b)+' ₽';
+  }
+
+  function calc(){
+    const v = {};
+    ids.forEach(k => v[k] = +$(k).value || 0);
+
+    const impressions = v.ctr>0 ? (v.cpc>0 ? (v.budget/v.cpc)/(v.ctr/100) : 0) : 0;
+    const clicks  = v.cpc>0 ? v.budget/v.cpc : 0;
+    const cpm     = impressions>0 ? v.budget/impressions*1000 : 0;
+    const leads   = clicks*(v.cr1/100);
+    const sales   = leads*(v.cr2/100);
+    const cpl     = leads>0 ? v.budget/leads : 0;
+    const cpa     = sales>0 ? v.budget/sales : 0;
+    const revenue = sales*v.check;
+    const drr     = revenue>0 ? v.budget/revenue*100 : 0;
+    const grossPerSale = v.check*(v.margin/100);          // маржа с одной продажи
+    const becpa   = grossPerSale;                          // дороже покупать нельзя
+    const ltv     = grossPerSale*v.repeat;                 // вдолгую
+    const ltvcac  = cpa>0 ? ltv/cpa : 0;
+    const roas    = v.budget>0 ? revenue/v.budget : 0;
+    const totalCost = v.budget+v.extra;
+    const grossProfit = revenue*(v.margin/100);
+    const profit  = grossProfit - v.budget - v.extra;
+    const romi    = totalCost>0 ? (profit/totalCost)*100 : 0;
+    const beUnits = grossPerSale>0 ? totalCost/grossPerSale : 0; // продаж до нуля
+
+    // render
+    $('impr').textContent   = fmt(impressions);
+    $('clicks').textContent = fmt(clicks);
+    $('leads').textContent  = fmt(leads);
+    $('sales').textContent  = fmt(sales);
+    $('cpm').textContent    = fmt(cpm)+' ₽';
+    $('cpl').textContent    = fmt(cpl)+' ₽';
+    $('cpa').textContent    = fmt(cpa)+' ₽';
+    $('drr').textContent    = fmt1(drr)+' %';
+    $('roas').textContent   = fmt1(roas)+'x';
+    $('romi').textContent   = fmt(romi)+' %';
+    $('becpa').textContent  = fmt(becpa)+' ₽';
+    $('beunits').textContent= fmt(beUnits);
+    $('ltv').textContent    = fmt(ltv)+' ₽';
+    $('ltvcac').textContent = fmt1(ltvcac)+'x';
+    $('revenue').textContent= fmt(revenue)+' ₽';
+    $('profit').textContent = fmt(profit)+' ₽';
+
+    // LTV:CAC pill
+    const lp = $('ltvPill');
+    if(ltvcac>=3){lp.className='pill ok';lp.textContent='здорово (≥3)';}
+    else if(ltvcac>=1){lp.className='pill warn';lp.textContent='тонко';}
+    else {lp.className='pill bad';lp.textContent='горит';}
+
+    // verdict
+    const ver = $('verdict'), word = $('verdictWord'), pc = $('profitCard');
+    if(profit>0){
+      ver.className='verdict win'; word.textContent='Окупается';
+      pc.className='card hero win';
+    } else if(profit>-totalCost*0.05){
+      ver.className='verdict win'; word.textContent='На грани';
+      pc.className='card hero lose';
+    } else {
+      ver.className='verdict lose'; word.textContent='Не окупается';
+      pc.className='card hero lose';
+    }
+
+    renderNotes({profit,drr,roas,romi,cpa,becpa,ltvcac,leads,sales,clicks,cpl});
+  }
+
+  function renderNotes(m){
+    const rows=[];
+    // 1. экономика / запас до точки безубыточности
+    const gap = m.becpa - m.cpa;
+    if(m.profit>0){
+      rows.push(`Экономика сходится: CPA <b>${fmt(m.cpa)} ₽</b>, запас до точки безубыточности <b>${fmt(Math.max(0,gap))} ₽</b>.`);
+    } else {
+      rows.push(`Минус: продажа стоит <b>${fmt(m.cpa)} ₽</b> при потолке <b>${fmt(m.becpa)} ₽</b>. Режем CPC или поднимаем конверсию.`);
+    }
+    // 2. ДРР
+    if(m.drr<=20) rows.push(`ДРР <b>${fmt1(m.drr)}%</b> — комфортно, есть куда наращивать бюджет.`);
+    else if(m.drr<=35) rows.push(`ДРР <b>${fmt1(m.drr)}%</b> — рабочая зона, но следи за маржой при масштабе.`);
+    else rows.push(`ДРР <b>${fmt1(m.drr)}%</b> — высокая. Реклама съедает выручку, оптимизируй воронку до разгона.`);
+    // 3. LTV:CAC
+    if(m.ltvcac>=3) rows.push(`LTV:CAC <b>${fmt1(m.ltvcac)}x</b> — можно агрессивно тестировать масштабирование.`);
+    else if(m.ltvcac>=1) rows.push(`LTV:CAC <b>${fmt1(m.ltvcac)}x</b> — тонко. Думай о повторных продажах и допродажах, не только о новом трафике.`);
+    else rows.push(`LTV:CAC <b>${fmt1(m.ltvcac)}x</b> — клиент стоит дороже, чем приносит. Либо чек/повторы вверх, либо CAC вниз.`);
+    // 4. узкое место воронки
+    const bottleneck = m.leads<m.sales*5 ? 'мало заявок — узкое место наверху, работай с креативом и оффером' :
+                       m.sales<1 ? 'продаж почти нет — проблема в отделе продаж или квалификации лидов' :
+                       'воронка выглядит ровной';
+    rows.push(`Воронка: ${fmt(m.clicks)} кликов → ${fmt(m.leads)} заявок → ${fmt(m.sales)} продаж. ${bottleneck.charAt(0).toUpperCase()+bottleneck.slice(1)}.`);
+
+    $('notes').innerHTML = rows.map(r=>`<div class="row">${r}</div>`).join('');
+  }
+
+  function applyScenario(scn){
+    activeScn=scn;
+    document.querySelectorAll('.scn').forEach(b=>b.classList.toggle('active',b.dataset.scn===scn));
+    const m=SCN[scn];
+    $('cr1').value = +(baseReal.cr1*m.cr1).toFixed(1);
+    $('cr2').value = +(baseReal.cr2*m.cr2).toFixed(1);
+    $('cpc').value = Math.round(baseReal.cpc*m.cpc);
+    syncRange(); calc();
+  }
+
+  // events
+  ids.forEach(k=>$(k).addEventListener('input',()=>{ if(['cr1','cr2','cpc'].includes(k)) baseReal[k]=+$(k).value; syncRange(); calc(); }));
+  $('budgetRange').addEventListener('input',()=>{ $('budget').value=$('budgetRange').value; syncRange(); calc(); });
+  document.querySelectorAll('.scn').forEach(b=>b.addEventListener('click',()=>applyScenario(b.dataset.scn)));
+  $('reset').addEventListener('click',()=>{ Object.keys(DEFAULTS).forEach(k=>$(k).value=DEFAULTS[k]); baseReal={...DEFAULTS}; applyScenario('real'); });
+  $('better').addEventListener('click',()=>{ $('cr1').value=(+$('cr1').value*1.15).toFixed(1); $('cr2').value=(+$('cr2').value*1.15).toFixed(1); $('cpc').value=Math.round(+$('cpc').value*0.9); baseReal.cr1=+$('cr1').value; baseReal.cr2=+$('cr2').value; baseReal.cpc=+$('cpc').value; calc(); });
+
+  syncRange(); calc();
+</script>
+</body>
+</html>

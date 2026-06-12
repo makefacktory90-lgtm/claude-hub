@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 10 — Claude Code: первый простой сервис</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10 md:py-14">
+    <div class="mb-8">
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">Claude Hub · lesson 10</div>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+        Claude Code: первый простой сервис
+      </h1>
+      <p class="text-zinc-400 text-base md:text-lg leading-relaxed max-w-4xl">
+        Здесь собраны два примера простых сервисов, которые можно показать как результат работы через Claude Code. Это уже не разговоры про “ну там можно что-то собрать”, а нормальные открывающиеся страницы, которые можно тыкать руками.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://screen.studio/share/KjSiOkYM" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть видео
+        </a>
+        <a href="./lesson.html?id=day-10" class="inline-flex rounded-full border border-zinc-700 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-zinc-200 hover:border-brand hover:text-brand transition">
+          Назад к уроку
+        </a>
+      </div>
+    </div>
+
+    <section class="space-y-6">
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Что смотреть</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Как Claude Code доводит идею до простого рабочего сервиса.</li>
+          <li>Как выглядит не сырой черновик, а уже открываемый инструмент.</li>
+          <li>Какой результат можно собрать под свою рабочую задачу без ручной разработки с нуля.</li>
+        </ul>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Примеры сервисов</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          <a href="./digital-marketing-calculator.html" class="rounded-2xl border border-zinc-800 bg-black/30 p-5 hover:border-brand transition" target="_blank" rel="noreferrer">
+            <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-brand/80 mb-3">Demo 01</div>
+            <h3 class="text-xl font-black text-white mb-2">Digital Marketing Calculator</h3>
+            <p class="text-zinc-400 leading-relaxed">
+              Яркий маркетинговый калькулятор как пример сервиса, который уже выглядит как нормальный самостоятельный продукт.
+            </p>
+          </a>
+
+          <a href="./marketing-calculator-green.html" class="rounded-2xl border border-zinc-800 bg-black/30 p-5 hover:border-brand transition" target="_blank" rel="noreferrer">
+            <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-brand/80 mb-3">Demo 02</div>
+            <h3 class="text-xl font-black text-white mb-2">Marketing Calculator Green</h3>
+            <p class="text-zinc-400 leading-relaxed">
+              Вторая версия калькулятора с другим визуальным решением, чтобы видеть, как можно быстро перебирать варианты сервиса.
+            </p>
+          </a>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Домашка</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Собрать простой сервис или инструмент при помощи Claude Code.</li>
+          <li>Выбрать задачу, которая реально пригодится в жизни или работе.</li>
+          <li>Довести сервис до состояния, когда его можно открыть и использовать.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

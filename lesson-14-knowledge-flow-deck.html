@@ -91,6 +91,33 @@
       line-height: 1.5;
     }
 
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      text-decoration: none;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero-link:hover {
+      border-color: rgba(217,119,87,0.46);
+    }
+
     .slides {
       display: grid;
       gap: 22px;
@@ -345,6 +372,11 @@
       line-height: 1.5;
     }
 
+    .mono {
+      font-family: "JetBrains Mono", monospace;
+      color: #f3d2c7;
+    }
+
     .cycle {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -421,6 +453,16 @@
       font-weight: 900;
     }
 
+    .link {
+      color: #f3d2c7;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(243, 210, 199, 0.28);
+    }
+
+    .link:hover {
+      border-color: rgba(243, 210, 199, 0.7);
+    }
+
     @media (max-width: 980px) {
       .slide { min-height: auto; }
       .grid-2, .grid-3, .options, .connector-flow, .cycle, .checklist {
@@ -440,6 +482,11 @@
       <p>
         Короткая визуальная схема для урока. Минимум текста, максимум смысла: зачем нужна внешняя память, как выглядит база, как Клод на неё опирается и как встреча сама превращается в аккуратную запись в памяти.
       </p>
+      <div class="hero-links">
+        <a class="hero-link" href="https://obsidian.md/" target="_blank" rel="noreferrer">Obsidian</a>
+        <a class="hero-link" href="https://www.notion.so/" target="_blank" rel="noreferrer">Notion</a>
+        <a class="hero-link" href="./База-знаний.zip" target="_blank" rel="noreferrer">Архив базы</a>
+      </div>
     </section>
 
     <div class="slides">
@@ -500,16 +547,18 @@
         </div>
         <h2 class="slide-title">Репозиторий — это просто организованная папка. Не магия.</h2>
         <p class="slide-sub">
-          Важно не где именно она лежит, а что это внешнее место памяти, куда робот может обратиться и найти твои файлы.
+          Важно не где именно она лежит, а что это внешнее место памяти, куда робот может обратиться и найти нужные файлы.
         </p>
         <div class="options">
           <div class="option">
             <h4>Obsidian</h4>
-            <p>У тебя лично тут живет часть файлов. Удобно, если нужен живой knowledge base и синхронизация между машинами.</p>
+            <p>Часто выбирают этот вариант, если нужен живой knowledge base и синхронизация между машинами.</p>
+            <p><a class="link" href="https://obsidian.md/" target="_blank" rel="noreferrer">obsidian.md</a></p>
           </div>
           <div class="option">
             <h4>Notion</h4>
-            <p>У тебя лично тут живет другая часть файлов. Подходит, если удобнее держать всё в страницах и базах.</p>
+            <p>Часто выбирают этот вариант, если удобнее держать всё в страницах и базах.</p>
+            <p><a class="link" href="https://www.notion.so/" target="_blank" rel="noreferrer">notion.so</a></p>
           </div>
           <div class="option">
             <h4>Google Drive</h4>
@@ -523,8 +572,18 @@
         <div class="card">
           <h3>Главное правило</h3>
           <p>
-            Можно держать базу целиком в Obsidian, целиком в Notion, на Drive, на диске или как угодно ещё. Важно не место, а то, что у тебя есть внешнее хранилище знаний, к которому робот может обратиться и найти твои файлы.
+            Базу можно держать целиком в Obsidian, целиком в Notion, на Drive, на диске или как угодно ещё. Важно не место, а наличие внешнего хранилища знаний, к которому робот может обратиться и найти нужные файлы.
           </p>
+        </div>
+        <div class="card">
+          <h3>Про Vault — проще некуда</h3>
+          <ul class="clean">
+            <li>Скачиваете Obsidian.</li>
+            <li>Открываете его и создаёте Vault.</li>
+            <li>Vault — это просто папка с <span class="mono">.md</span>-файлами на вашем компьютере.</li>
+            <li>На этом рабочем многодатном компьютере Claude сам видит эту папку и может работать с файлами напрямую.</li>
+            <li>Никаких плагинов, токенов и MCP для обычных заметок не нужно.</li>
+          </ul>
         </div>
       </section>
 
@@ -534,7 +593,7 @@
         </div>
         <h2 class="slide-title">Каркас базы знаний. Скелет общий, мясо у каждого своё.</h2>
         <p class="slide-sub">
-          Это не чужая кухня, а понятная схема. Ты берешь структуру, а наполняешь её своими материалами.
+          Это не чужая кухня, а понятная схема. Структура общая, а наполнение у каждого свое.
         </p>
         <div class="folder-system">
           <div class="folder"><div><strong>00-Текучка</strong><small>пульт: что в работе прямо сейчас</small></div><div class="pill">сегодня</div></div>
@@ -602,7 +661,7 @@
         </div>
         <h2 class="slide-title">Звезда урока: флоу «Встреча → Саммари → База»</h2>
         <p class="slide-sub">
-          Магия начинается в тот момент, когда встреча заканчивается, а знание уже лежит в базе. Не ты руками переписываешь, а Клод забирает, чистит и оформляет.
+          Магия начинается в тот момент, когда встреча заканчивается, а знание уже лежит в базе. Не приходится переписывать всё руками: Клод забирает, чистит и оформляет.
         </p>
         <div class="connector-flow">
           <div class="flow-box">
@@ -633,28 +692,17 @@
         <div class="slide-head">
           <div class="slide-num">Слайд 06</div>
         </div>
-        <h2 class="slide-title">Первая база будет простой. Следующая — уже мощнее, сложнее и полезнее.</h2>
+        <h2 class="slide-title">Первая база будет простой. И это нормально.</h2>
         <p class="slide-sub">
-          Первая версия — это не космодром, а нормальный стартовый модуль. Вторая и третья база вырастают, когда в них начинает падать больше встреч, проектов, шаблонов и связок.
+          На старте не нужен космодром. Нужен понятный рабочий модуль: одна живая структура, одна точка опоры и место, куда знания начинают складываться без хаоса.
         </p>
         <div class="grid-2">
-          <div class="compare-note">
-            <div class="img-wrap">
-              <img src="./lesson-14-assets/booster-simple.png" alt="Простая первая база">
-            </div>
-            <div class="card">
-              <h3>Первая база</h3>
-              <p>Простая, понятная, без фанатизма. Главное — чтобы уже была живая структура и одна рабочая точка опоры.</p>
-            </div>
+          <div class="img-wrap">
+            <img src="./lesson-14-assets/booster-simple.png" alt="Простая первая база">
           </div>
-          <div class="compare-note">
-            <div class="img-wrap">
-              <img src="./lesson-14-assets/booster-complex.png" alt="Более сложная развитая база">
-            </div>
-            <div class="card">
-              <h3>Следующая база</h3>
-              <p>Шире, богаче и умнее. Больше слоев, больше автоматизации, больше связок — но логика та же: внешняя память для тебя и для робота.</p>
-            </div>
+          <div class="card">
+            <h3>Смысл этой метафоры</h3>
+            <p>Первая база не обязана быть сложной. Чаще начинают с простой, но живой системы: текучка, проекты, встречи, шаблоны и знания. А дальше она уже растет вместе с работой.</p>
           </div>
         </div>
       </section>

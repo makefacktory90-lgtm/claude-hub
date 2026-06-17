@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 12 — Идём в данные</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10 md:py-14">
+    <div class="mb-8">
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">Claude Hub · lesson 12</div>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+        Идём в данные
+      </h1>
+      <p class="text-zinc-400 text-base md:text-lg leading-relaxed max-w-4xl">
+        Здесь лежит рабочий промпт, ссылки на инструменты и пример дашборда из урока, где мы превращаем большой PDF-отчёт в таблицу, Google Sheets, визуализацию и заготовку под обновляемую базу данных.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://screen.studio/share/LlNUDvsw" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть видео
+        </a>
+        <a href="./lesson.html?id=day-12" class="inline-flex rounded-full border border-zinc-700 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-zinc-200 hover:border-brand hover:text-brand transition">
+          Назад к уроку
+        </a>
+      </div>
+    </div>
+
+    <section class="space-y-6">
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Промпт из урока</h2>
+        <pre class="overflow-x-auto rounded-2xl border border-zinc-800 bg-black/40 p-4 text-sm leading-relaxed text-zinc-200 whitespace-pre-wrap font-mono">Возьми этот PDF-отчёт и собери простую таблицу с колонками: ( тут вставьте ваши колонки)
+
+metric | value | unit | topic | why_it_matters
+
+Вытащи 8–10 самых важных чисел по темам: ( тут вставьте ваши запросы)
+- workforce planning
+- employee development
+- retention
+- AI in HR
+
+Сделай формулировки короткими, понятными и на русском языке.
+
+Важно: ( тут напишите что для вас важно)
+- цифры пиши крупно и ясно, без длинных конструкций
+- акцент делай на AI и на том, как такие данные можно использовать в маркетинге и принятии решений
+- в колонке why_it_matters объясняй простым языком, почему эта цифра важна для бизнеса
+
+1. сначала дай таблицу в обычном виде
+2. потом отдельно отдай её в CSV-формате, чтобы я могла вставить её в Google Sheets
+
+Потом просила отдать эти же данные в TSV, чтобы они нормально вставлялись в Google Sheets.</pre>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Инструменты и ссылки</h2>
+        <div class="space-y-4 text-zinc-300 leading-relaxed">
+          <div>
+            <h3 class="font-semibold text-white mb-2">Google Sheets</h3>
+            <a href="https://www.google.com/sheets/about/" target="_blank" rel="noreferrer" class="text-brand hover:underline">https://www.google.com/sheets/about/</a>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">Pygwalker</h3>
+            <a href="https://github.com/Kanaries/pygwalker" target="_blank" rel="noreferrer" class="text-brand hover:underline">https://github.com/Kanaries/pygwalker</a>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">Observable Framework</h3>
+            <a href="https://github.com/observablehq/framework" target="_blank" rel="noreferrer" class="text-brand hover:underline">https://github.com/observablehq/framework</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Пример дашборда</h2>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          Вот пример результата, который можно собрать после того, как вы вытащили цифры из отчёта, оформили таблицу и пошли в визуализацию.
+        </p>
+        <a href="./HR-2026_observable_dashboard.html" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть дашборд
+        </a>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Домашка</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li><strong>1 уровень:</strong> взять любые данные и собрать из них таблицу в Google Sheets.</li>
+          <li><strong>2 уровень:</strong> сделать Google Sheets и добавить визуализацию.</li>
+          <li><strong>3 уровень:</strong> сделать Google Sheets, визуализацию и обновляемую базу данных.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

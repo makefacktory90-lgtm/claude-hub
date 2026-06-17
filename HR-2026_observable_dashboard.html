@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Monitor 2026 — Observable дашборд</title>
+<style>
+  :root{
+    --ink:#1b1e23; --muted:#6b7280; --line:#e6e8eb; --bg:#ffffff;
+    --wp:#3b82f6; --ed:#10b981; --rt:#f59e0b; --ai:#ef4444; --card:#fafbfc;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 26px 70px}
+  .kick{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  h1{font-size:26px;margin:6px 0 4px;font-weight:700}
+  .sub{color:var(--muted);font-size:14px;max-width:740px}
+
+  /* AI KPI hero row — bigger numbers */
+  .hero{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 8px}
+  .kpi{background:linear-gradient(160deg,#fff,#fff5f5);border:1px solid #fbd5d5;border-radius:16px;padding:22px}
+  .kpi .lab{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--ai);text-transform:uppercase}
+  .kpi .v{font-size:60px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--ai);margin:8px 0 2px}
+  .kpi .d{font-size:13px;color:#7a3030}
+  .kpi .pg{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;background:var(--ai);color:#fff;border-radius:20px;padding:2px 9px}
+  .heronote{font-size:12px;color:var(--muted);margin:2px 0 6px}
+
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:30px 0 14px}
+  .controls .l{font-size:13px;color:var(--muted);margin-right:4px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 14px;font-size:13px;
+    cursor:pointer;font-weight:600;color:#374151;transition:.15s}
+  .chip:hover{border-color:#c3c8cf}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chip.wp.on{background:var(--wp);border-color:var(--wp)}
+  .chip.ed.on{background:var(--ed);border-color:var(--ed)}
+  .chip.rt.on{background:var(--rt);border-color:var(--rt)}
+  .chip.ai.on{background:var(--ai);border-color:var(--ai)}
+
+  .panel{border:1px solid var(--line);border-radius:16px;padding:18px 20px 8px;margin-top:6px;background:#fff}
+  .panel h3{margin:2px 0 2px;font-size:15px}
+  .panel .hint{font-size:12px;color:var(--muted);margin:0 0 6px}
+  #chart{overflow-x:auto}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:22px}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;border-bottom:2px solid var(--line);padding:8px 10px}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  td.v{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:#fff}
+  .t-wp{background:var(--wp)} .t-ed{background:var(--ed)} .t-rt{background:var(--rt)} .t-ai{background:var(--ai)}
+  tr.aimark td{background:#fff6f6}
+  .src{font-size:12px;color:var(--muted);margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+  .built{font-size:11px;color:#9aa1ab;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">McKinsey · HR Monitor 2026 · интерактивный дашборд</div>
+  <h1>Ключевые метрики для маркетинга и команды</h1>
+  <div class="sub">Кликай по темам, чтобы фильтровать график и таблицу. Числа по AI в маркетинге вынесены наверх крупно.</div>
+
+  <div class="heronote">AI в маркетинге — главное:</div>
+  <div class="hero" id="hero"></div>
+
+  <div class="controls" id="controls">
+    <span class="l">Темы:</span>
+  </div>
+
+  <div class="panel">
+    <h3 id="chartTitle">Все метрики</h3>
+    <p class="hint">Высота столбца — значение метрики. Цвет — тема. Наведи курсор для подсказки.</p>
+    <div id="chart"></div>
+  </div>
+
+  <table id="tbl">
+    <thead><tr><th>Метрика</th><th>Тема</th><th style="text-align:right">Значение</th><th>Почему важно</th><th>Стр.</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="src">Источник: McKinsey, «HR Monitor 2026» (июнь 2026). Значения по состоянию на 2026-06-13.</div>
+  <div class="built">Построено на Observable Plot — движке графиков Observable Framework. Self-contained HTML, открывается в браузере.</div>
+</div>
+
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const COLORS = {"Workforce planning":"#3b82f6","Employee development":"#10b981","Retention":"#f59e0b","AI в маркетинге":"#ef4444"};
+const CLS = {"Workforce planning":"wp","Employee development":"ed","Retention":"rt","AI в маркетинге":"ai"};
+
+const data = [
+ {metric:"Стратег. планирование персонала (3+ года)",value:11,unit:"%",topic:"Workforce planning",why:"Почти никто не планирует вдолгую — риск недооценить перемены от ИИ",page:9,ai:false},
+ {metric:"Сотрудникам не хватает части навыков",value:23,unit:"%",topic:"Workforce planning",why:"Разрыв в навыках уже есть и будет расти",page:7,ai:false},
+ {metric:"Сотрудники без обучения за год",value:24,unit:"%",topic:"Employee development",why:"Почти четверть не училась вообще",page:21,ai:false},
+ {metric:"Дни обучения в год (факт)",value:3.4,unit:"дней",topic:"Employee development",why:"HR оценивает 6.2 — переоценка почти вдвое",page:20,ai:false},
+ {metric:"Прошли обучение gen AI (Европа)",value:25,unit:"%",topic:"Employee development",why:"Готовности к ИИ почти нет",page:21,ai:true},
+ {metric:"Компенсация — драйвер удержания №1",value:52,unit:"%",topic:"Retention",why:"Деньги резко вышли на 1-е место (+24 п.п.)",page:26,ai:false},
+ {metric:"Зарплата не менялась за год",value:57,unit:"%",topic:"Retention",why:"Деньги — драйвер №1; риск ухода",page:30,ai:false},
+ {metric:"Коммуникации: профессия исчезнет",value:15,unit:"%",topic:"AI в маркетинге",why:"Самый высокий показатель среди всех 18 функций",page:34,ai:true},
+ {metric:"Маркетинг: профессия исчезнет",value:7,unit:"%",topic:"AI в маркетинге",why:"Плюс ещё 20% — «работа изменится сильно»",page:34,ai:true},
+ {metric:"Креативность — место среди навыков",value:2,unit:"место",topic:"AI в маркетинге",why:"Креативность дорожает (было 5-е, +6 п.п.)",page:8,ai:true},
+];
+
+// hero KPIs (AI marketing standout three)
+const hero = [
+ {lab:"Коммуникации: исчезнет",v:"15%",d:"максимум среди всех функций",pg:"стр. 34"},
+ {lab:"Маркетинг: исчезнет",v:"7%",d:"+20% «изменится сильно»",pg:"стр. 34"},
+ {lab:"Креативность — навык",v:"№2",d:"было 5-е место, +6 п.п.",pg:"стр. 8"},
+];
+document.getElementById("hero").innerHTML = hero.map(h=>
+ `<div class="kpi"><div class="lab">${h.lab}</div><div class="v">${h.v}</div><div class="d">${h.d}</div><span class="pg">${h.pg}</span></div>`).join("");
+
+const topics = ["Все",...Object.keys(COLORS)];
+let active = "Все";
+
+const ctr = document.getElementById("controls");
+topics.forEach(t=>{
+  const b=document.createElement("button");
+  b.className="chip "+(t==="Все"?"":CLS[t])+(t===active?" on":"");
+  b.textContent=t; b.onclick=()=>{active=t;render();};
+  ctr.appendChild(b);
+});
+
+function render(){
+  document.querySelectorAll(".chip").forEach(c=>{
+    c.classList.toggle("on", c.textContent===active);
+  });
+  const rows = active==="Все"?data:data.filter(d=>d.topic===active);
+  document.getElementById("chartTitle").textContent = active==="Все"?"Все метрики":active;
+
+  const chart = Plot.plot({
+    marginLeft:280, marginRight:40, height: Math.max(140, rows.length*42+40), width:1020,
+    x:{label:"значение →", grid:true},
+    y:{label:null, domain: rows.slice().sort((a,b)=>a.value-b.value).map(d=>d.metric)},
+    color:{legend:false},
+    marks:[
+      Plot.barX(rows,{x:"value",y:"metric",fill:d=>COLORS[d.topic],rx:4,
+        title:d=>`${d.metric}\n${d.value}${d.unit==='%'?'%':' '+d.unit} · ${d.topic}\n${d.why} (стр. ${d.page})`}),
+      Plot.text(rows,{x:"value",y:"metric",text:d=>d.value+(d.unit==='%'?'%':''),dx:14,fontWeight:700,fill:"#1b1e23"}),
+      Plot.ruleX([0])
+    ]
+  });
+  const c=document.getElementById("chart"); c.innerHTML=""; c.append(chart);
+
+  const tb=document.querySelector("#tbl tbody");
+  tb.innerHTML = rows.map(d=>`<tr class="${d.ai?'aimark':''}">
+    <td>${d.ai?'⭐ ':''}${d.metric}</td>
+    <td><span class="tag t-${CLS[d.topic]}">${d.topic}</span></td>
+    <td class="v">${d.value}${d.unit==='%'?'%':' '+d.unit}</td>
+    <td style="color:#6b7280">${d.why}</td>
+    <td>${d.page}</td></tr>`).join("");
+}
+render();
+</script>
+</body>
+</html>

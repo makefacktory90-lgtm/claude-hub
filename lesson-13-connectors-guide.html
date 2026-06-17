@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 13 — Коннекторы</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10 md:py-14">
+    <div class="mb-8">
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">Claude Hub · lesson 13</div>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+        Коннекторы: начинаем в одном, продолжаем в другом месте
+      </h1>
+      <p class="text-zinc-400 text-base md:text-lg leading-relaxed max-w-4xl">
+        В этом уроке разбираем, как связывать сервисы через Claude так, чтобы он не просто перекидывал данные, а реально помогал доводить задачу до результата в нескольких инструментах.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://screen.studio/share/3sINo1hK" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть видео
+        </a>
+        <a href="./lesson.html?id=day-13" class="inline-flex rounded-full border border-zinc-700 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-zinc-200 hover:border-brand hover:text-brand transition">
+          Назад к уроку
+        </a>
+      </div>
+    </div>
+
+    <section class="space-y-6">
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Главная мысль</h2>
+        <p class="text-zinc-300 leading-relaxed">
+          Подключено в настройках и реально работает прямо сейчас — не одно и то же. Если связка не подхватилась, идём в <span class="font-mono">Settings → Connectors</span> и переподключаем. Если готового коннектора нет, проверяем, не раздает ли сервис свой MCP-адрес.
+        </p>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Как добавить custom connector</h2>
+        <ol class="space-y-3 text-zinc-300 leading-relaxed list-decimal pl-5">
+          <li>Открыть <span class="font-mono">Settings → Connectors</span>.</li>
+          <li>Нажать <span class="font-mono">+</span>.</li>
+          <li>Выбрать <span class="font-mono">Add custom connector</span>.</li>
+          <li>Вставить URL MCP-адреса.</li>
+          <li>Пройти авторизацию.</li>
+          <li>Если не знаете адрес, попросить Claude в чате найти <span class="font-mono">[название сервиса] MCP</span>.</li>
+        </ol>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Примеры связок</h2>
+        <div class="space-y-5 text-zinc-300 leading-relaxed">
+          <div>
+            <h3 class="font-semibold text-white mb-2">Связка 1. Из встречи — в готовый пост</h3>
+            <p><span class="font-mono">Granola → Notion → Canva</span></p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">Связка 2. Утро без паники</h3>
+            <p><span class="font-mono">Gmail (читаем) → Calendar (готовимся ко встрече) → Gmail (пишем черновик)</span></p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-2">Связка 3. Бриф — в три обложки</h3>
+            <p><span class="font-mono">Gmail → Drive (берём бренд-бук) → Canva</span></p>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Домашка</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li><strong>1 уровень:</strong> подключить коннекторы из своего арсенала в Claude.</li>
+          <li><strong>2 уровень:</strong> подключить коннектор через API (MCP) или через Zapier.</li>
+          <li><strong>3 уровень:</strong> собрать flow, где хотя бы два инструмента связаны через Claude: начали в одном, закончили в другом.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

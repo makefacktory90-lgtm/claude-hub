@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 14 — База знаний + флоу «Встреча → Память»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #060606;
+      --panel: #0f0f12;
+      --panel-2: #141419;
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.18);
+      --text: #f5f1eb;
+      --muted: #9d988f;
+      --brand: #d97757;
+      --brand-soft: rgba(217, 119, 87, 0.12);
+      --ok: #68d391;
+      --violet: #8b5cf6;
+      --cyan: #22d3ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top, rgba(217, 119, 87, 0.12), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 22px 64px;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: rgba(15, 15, 18, 0.86);
+      padding: 32px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -45% auto;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 119, 87, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(217, 119, 87, 0.88);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 0.95;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      max-width: 940px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.5;
+    }
+
+    .slides {
+      display: grid;
+      gap: 22px;
+    }
+
+    .slide {
+      min-height: 88vh;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: linear-gradient(180deg, rgba(16, 16, 20, 0.96), rgba(9, 9, 11, 0.96));
+      padding: 28px;
+      display: grid;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .slide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .slide-num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .slide-title {
+      font-size: clamp(24px, 3.4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .slide-sub {
+      margin: 0;
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(20, 20, 25, 0.92);
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 16px;
+    }
+
+    ul.clean {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .chaos {
+      min-height: 320px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(217, 119, 87, 0.08), transparent 55%),
+        rgba(0,0,0,0.24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .float-note,
+    .float-window {
+      position: absolute;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(10px);
+    }
+
+    .float-window {
+      width: 230px;
+      height: 140px;
+      padding: 14px;
+    }
+
+    .float-note {
+      width: 130px;
+      height: 94px;
+      padding: 12px;
+      background: rgba(217,119,87,0.12);
+    }
+
+    .w1 { top: 18px; left: 24px; transform: rotate(-6deg); }
+    .w2 { top: 36px; right: 34px; transform: rotate(4deg); }
+    .w3 { bottom: 28px; left: 120px; transform: rotate(6deg); width: 260px; }
+    .n1 { bottom: 34px; right: 56px; transform: rotate(-8deg); }
+    .n2 { top: 172px; left: 310px; transform: rotate(10deg); }
+
+    .window-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .line {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 8px;
+    }
+
+    .folder-system {
+      display: grid;
+      gap: 12px;
+    }
+
+    .folder {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .folder strong {
+      display: block;
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .folder small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: #f7d7cd;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .option {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+      min-height: 132px;
+    }
+
+    .option h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .connector-flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .flow-box {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      padding: 24px;
+      min-height: 210px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .flow-box h4 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .flow-arrow {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--brand);
+    }
+
+    .claude-core {
+      border: 1px solid rgba(217, 119, 87, 0.24);
+      background: linear-gradient(180deg, rgba(217, 119, 87, 0.12), rgba(217, 119, 87, 0.04));
+    }
+
+    .bubble {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .cycle {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .cycle-step {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px 18px;
+      background: rgba(255,255,255,0.03);
+      text-align: center;
+    }
+
+    .cycle-step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .diagram {
+      min-height: 280px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      display: grid;
+      place-items: center;
+    }
+
+    .diagram svg {
+      width: 100%;
+      height: auto;
+      max-width: 980px;
+    }
+
+    .img-wrap {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: #09090b;
+    }
+
+    .img-wrap img {
+      width: 100%;
+      display: block;
+      height: auto;
+    }
+
+    .compare-note {
+      display: grid;
+      gap: 12px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .check {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .check strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    @media (max-width: 980px) {
+      .slide { min-height: auto; }
+      .grid-2, .grid-3, .options, .connector-flow, .cycle, .checklist {
+        grid-template-columns: 1fr;
+      }
+      .flow-arrow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="eyebrow">Claude Hub · Lesson 14 · Memory Module</div>
+      <h1>База знаний + флоу «Встреча → Память»</h1>
+      <p>
+        Короткая визуальная схема для урока. Минимум текста, максимум смысла: зачем нужна внешняя память, как выглядит база, как Клод на неё опирается и как встреча сама превращается в аккуратную запись в памяти.
+      </p>
+    </section>
+
+    <div class="slides">
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 01</div>
+        </div>
+        <h2 class="slide-title">Проблема не в том, что знаний мало. Проблема в том, что они раскиданы.</h2>
+        <p class="slide-sub">
+          Встречи, заметки, процессы, идеи, файлы и мысли живут в разных местах. Пока это не собрано, Клод не может опираться на это как на нормальную систему.
+        </p>
+        <div class="grid-2">
+          <div class="chaos">
+            <div class="float-window w1">
+              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="line" style="width:72%"></div>
+              <div class="line" style="width:92%"></div>
+              <div class="line" style="width:60%"></div>
+            </div>
+            <div class="float-window w2">
+              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="line" style="width:82%"></div>
+              <div class="line" style="width:56%"></div>
+              <div class="line" style="width:88%"></div>
+            </div>
+            <div class="float-window w3">
+              <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="line" style="width:68%"></div>
+              <div class="line" style="width:94%"></div>
+              <div class="line" style="width:75%"></div>
+            </div>
+            <div class="float-note n1">
+              <div class="line" style="width:90%"></div>
+              <div class="line" style="width:64%"></div>
+              <div class="line" style="width:80%"></div>
+            </div>
+            <div class="float-note n2">
+              <div class="line" style="width:86%"></div>
+              <div class="line" style="width:54%"></div>
+              <div class="line" style="width:70%"></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Что нужно на выходе</h3>
+            <ul class="clean">
+              <li>Одно внешнее хранилище знаний.</li>
+              <li>Понятная структура папок.</li>
+              <li>Точка, куда Клод может заглянуть и найти контекст.</li>
+              <li>Система, которая живет после каждой встречи и проекта.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 02</div>
+        </div>
+        <h2 class="slide-title">Репозиторий — это просто организованная папка. Не магия.</h2>
+        <p class="slide-sub">
+          Важно не где именно она лежит, а что это внешнее место памяти, куда робот может обратиться и найти твои файлы.
+        </p>
+        <div class="options">
+          <div class="option">
+            <h4>Obsidian</h4>
+            <p>У тебя лично тут живет часть файлов. Удобно, если нужен живой knowledge base и синхронизация между машинами.</p>
+          </div>
+          <div class="option">
+            <h4>Notion</h4>
+            <p>У тебя лично тут живет другая часть файлов. Подходит, если удобнее держать всё в страницах и базах.</p>
+          </div>
+          <div class="option">
+            <h4>Google Drive</h4>
+            <p>Можно сделать базу целиком там. Главное, чтобы файлы были собраны и доступны как единое хранилище.</p>
+          </div>
+          <div class="option">
+            <h4>Флешка / диск</h4>
+            <p>Да, даже так можно. Важно не название сервиса, а то, что есть единый контекст, к которому можно обращаться.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Главное правило</h3>
+          <p>
+            Можно держать базу целиком в Obsidian, целиком в Notion, на Drive, на диске или как угодно ещё. Важно не место, а то, что у тебя есть внешнее хранилище знаний, к которому робот может обратиться и найти твои файлы.
+          </p>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 03</div>
+        </div>
+        <h2 class="slide-title">Каркас базы знаний. Скелет общий, мясо у каждого своё.</h2>
+        <p class="slide-sub">
+          Это не чужая кухня, а понятная схема. Ты берешь структуру, а наполняешь её своими материалами.
+        </p>
+        <div class="folder-system">
+          <div class="folder"><div><strong>00-Текучка</strong><small>пульт: что в работе прямо сейчас</small></div><div class="pill">сегодня</div></div>
+          <div class="folder"><div><strong>01-Процессы</strong><small>повторяющиеся действия: запуск, монтаж, найм, рутины</small></div><div class="pill">как делаю</div></div>
+          <div class="folder"><div><strong>02-Шаблоны</strong><small>рыбы документов: встреча, проект, пост</small></div><div class="pill">форма</div></div>
+          <div class="folder"><div><strong>03-Знания</strong><small>идеи, выводы, находки, цитаты</small></div><div class="pill">сохраняю</div></div>
+          <div class="folder"><div><strong>04-Проекты</strong><small>по папке на проект: цель, статус, решения</small></div><div class="pill">по задачам</div></div>
+          <div class="folder"><div><strong>05-Встречи</strong><small>саммари созвонов и всё, что падает из связки встречи</small></div><div class="pill">авто</div></div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 04</div>
+        </div>
+        <h2 class="slide-title">Подключаем базу к Клоду один раз. Дальше он держит это в уме.</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Фраза для подключения</h3>
+            <div class="bubble">
+              Опирайся на мою базу из папки «База знаний» в задачах по контенту. Сначала посмотри, что там уже есть.
+            </div>
+          </div>
+          <div class="card">
+            <h3>Что происходит дальше</h3>
+            <ul class="clean">
+              <li>Клод читает, что уже лежит в базе.</li>
+              <li>Не стартует каждый раз с нуля.</li>
+              <li>Опирается на процессы, шаблоны, проекты и встречи.</li>
+              <li>Становится не просто чатом, а коллегой с памятью.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 280" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d97757"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <rect x="30" y="60" width="260" height="160" rx="28" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+            <text x="60" y="104" fill="#fff" font-size="26" font-family="Inter" font-weight="800">База знаний</text>
+            <text x="60" y="138" fill="#9d988f" font-size="16" font-family="Inter">процессы · шаблоны · проекты</text>
+            <text x="60" y="164" fill="#9d988f" font-size="16" font-family="Inter">встречи · знания · текучка</text>
+
+            <rect x="380" y="40" width="240" height="200" rx="34" fill="url(#g1)" opacity="0.18" stroke="rgba(217,119,87,0.28)"/>
+            <text x="458" y="124" fill="#fff" font-size="34" font-family="Inter" font-weight="900">Claude</text>
+            <text x="438" y="156" fill="#f0d1c7" font-size="16" font-family="Inter">смотрит контекст</text>
+
+            <rect x="710" y="60" width="260" height="160" rx="28" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+            <text x="740" y="104" fill="#fff" font-size="26" font-family="Inter" font-weight="800">Задачи</text>
+            <text x="740" y="138" fill="#9d988f" font-size="16" font-family="Inter">контент · решения · брифы</text>
+            <text x="740" y="164" fill="#9d988f" font-size="16" font-family="Inter">проекты · ответы · саммари</text>
+
+            <path d="M290 140h70" stroke="#d97757" stroke-width="8" stroke-linecap="round"/>
+            <path d="M620 140h70" stroke="#d97757" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 05</div>
+        </div>
+        <h2 class="slide-title">Звезда урока: флоу «Встреча → Саммари → База»</h2>
+        <p class="slide-sub">
+          Магия начинается в тот момент, когда встреча заканчивается, а знание уже лежит в базе. Не ты руками переписываешь, а Клод забирает, чистит и оформляет.
+        </p>
+        <div class="connector-flow">
+          <div class="flow-box">
+            <h4>Встреча</h4>
+            <p>Zoom / Granola</p>
+            <p>Запись, заметки, сырые мысли, договоренности.</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box claude-core">
+            <h4>Claude</h4>
+            <p>Забирает запись через коннектор.</p>
+            <p>Вытаскивает решения, задачи, дедлайны, цитаты.</p>
+            <p>Оформляет по шаблону встречи.</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box">
+            <h4>База</h4>
+            <p>Готовый файл в папке «Встречи».</p>
+            <p>Чистая запись, по форме, уже пригодная для работы.</p>
+          </div>
+        </div>
+        <div class="bubble">
+          Возьми мою последнюю встречу, вытащи решения, задачи с дедлайнами и важные цитаты. Оформи как запись для базы знаний по моему шаблону встречи и положи в папку «Встречи».
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 06</div>
+        </div>
+        <h2 class="slide-title">Первая база будет простой. Следующая — уже мощнее, сложнее и полезнее.</h2>
+        <p class="slide-sub">
+          Первая версия — это не космодром, а нормальный стартовый модуль. Вторая и третья база вырастают, когда в них начинает падать больше встреч, проектов, шаблонов и связок.
+        </p>
+        <div class="grid-2">
+          <div class="compare-note">
+            <div class="img-wrap">
+              <img src="./lesson-14-assets/booster-simple.png" alt="Простая первая база">
+            </div>
+            <div class="card">
+              <h3>Первая база</h3>
+              <p>Простая, понятная, без фанатизма. Главное — чтобы уже была живая структура и одна рабочая точка опоры.</p>
+            </div>
+          </div>
+          <div class="compare-note">
+            <div class="img-wrap">
+              <img src="./lesson-14-assets/booster-complex.png" alt="Более сложная развитая база">
+            </div>
+            <div class="card">
+              <h3>Следующая база</h3>
+              <p>Шире, богаче и умнее. Больше слоев, больше автоматизации, больше связок — но логика та же: внешняя память для тебя и для робота.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <div class="slide-num">Слайд 07</div>
+        </div>
+        <h2 class="slide-title">Главное правило: база живая. Дальше контекст только нарастает.</h2>
+        <div class="cycle">
+          <div class="cycle-step">
+            <strong>Встреча</strong>
+            <span>что-то произошло</span>
+          </div>
+          <div class="cycle-step">
+            <strong>База</strong>
+            <span>знание сохранилось</span>
+          </div>
+          <div class="cycle-step">
+            <strong>Claude</strong>
+            <span>видит контекст</span>
+          </div>
+          <div class="cycle-step">
+            <strong>Новая задача</strong>
+            <span>стартует уже не с нуля</span>
+          </div>
+        </div>
+        <div class="checklist">
+          <div class="check">
+            <strong>База</strong>
+            <p>Собрать одну папку-репозиторий и подключить к Клоду. Каркас общий, содержимое свое.</p>
+          </div>
+          <div class="check">
+            <strong>PRO</strong>
+            <p>Настроить флоу «встреча → саммари → база», чтобы после ближайшей встречи запись появлялась одной командой.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

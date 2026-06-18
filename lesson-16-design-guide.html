@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Урок 16 — Клод Дизайн</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#D97757',
+            bgMain: '#050505',
+            bgCard: '#111111',
+            textCream: '#F5F1EB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-bgMain text-textCream font-sans antialiased">
+  <main class="max-w-5xl mx-auto px-6 py-10 md:py-14">
+    <div class="mb-8">
+      <div class="font-mono text-[11px] uppercase tracking-[0.28em] text-brand/80 mb-3">Claude Hub · lesson 16</div>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+        Клод Дизайн
+      </h1>
+      <p class="text-zinc-400 text-base md:text-lg leading-relaxed max-w-4xl">
+        В этом уроке проверяем на практике, что Клод умеет в дизайне: разбираем, как работать в Клод Дизайн, настраиваем дизайн-систему проекта и делаем первые макеты и концепты.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://screen.studio/share/kl2iIMF6" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть видео
+        </a>
+        <a href="./lesson.html?id=day-16" class="inline-flex rounded-full border border-zinc-700 px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-zinc-200 hover:border-brand hover:text-brand transition">
+          Назад к уроку
+        </a>
+      </div>
+    </div>
+
+    <section class="space-y-6">
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Что делаем в уроке</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li>Разбираемся, как работать в Клод Дизайн.</li>
+          <li>Настраиваем дизайн-систему проекта.</li>
+          <li>Делаем первые макеты и концепты.</li>
+          <li>Смотрим, как это встроить в реальный процесс с дизайнерами.</li>
+        </ul>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Open Design</h2>
+        <p class="text-zinc-400 leading-relaxed mb-4">
+          Вот репозиторий, который упоминается в уроке. Он полезен как ориентир и база для дальнейшей работы с открытым дизайн-процессом.
+        </p>
+        <a href="https://github.com/nexu-io/open-design" target="_blank" rel="noreferrer" class="inline-flex rounded-full bg-brand px-6 py-3 font-mono text-xs font-bold uppercase tracking-[0.24em] text-bgMain hover:opacity-95 transition">
+          Открыть GitHub Open Design
+        </a>
+      </article>
+
+      <article class="rounded-[28px] border border-zinc-900 bg-zinc-950/70 p-6 md:p-8">
+        <h2 class="text-xl md:text-2xl font-black text-white mb-4">Домашка</h2>
+        <ul class="space-y-3 text-zinc-300 leading-relaxed">
+          <li><strong>База:</strong> адаптировать прототип.</li>
+          <li><strong>Норм:</strong> создать свою дизайн-систему.</li>
+          <li><strong>Про:</strong> встроить дизайн-систему в реальный процесс работы с настоящими дизайнерами в вашей команде.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

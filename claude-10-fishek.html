@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 фишек Claude, которые усилят вашу работу</title>
+<meta name="description" content="10 реальных функций Claude и Claude Code с командами и ссылками на документацию. Учебный материал.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a; --paper:#f5f3ee; --line:#0a0a0a;
+    --accent:#ff3b30; --muted:#6b6b66;
+    --term:#111; --web:#1840b0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Outfit",system-ui,sans-serif;
+    background:var(--paper); color:var(--ink);
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 22px}
+
+  /* HERO */
+  header{padding:72px 0 40px;border-bottom:3px solid var(--line)}
+  .kicker{
+    font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:20px
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:900;line-height:1.02;
+    font-size:clamp(38px,7vw,68px);letter-spacing:-1px;margin-bottom:24px
+  }
+  h1 .red{color:var(--accent)}
+  .lead{font-size:clamp(17px,2.4vw,20px);max-width:620px;color:#2a2a28}
+  .lead b{font-weight:600}
+
+  /* LEGEND */
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .tag{
+    font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    padding:5px 12px;border:1.5px solid var(--line);border-radius:0
+  }
+  .tag.term{background:var(--ink);color:var(--paper)}
+  .tag.web{background:transparent;color:var(--ink)}
+
+  /* ITEM */
+  main{padding:24px 0 0}
+  .item{padding:40px 0;border-bottom:1px solid #d9d6cf}
+  .item:last-child{border-bottom:none}
+  .num{
+    font-family:"Fraunces",serif;font-weight:900;font-size:15px;
+    color:var(--accent);letter-spacing:1px;margin-bottom:10px
+  }
+  .item h2{
+    font-family:"Fraunces",serif;font-weight:600;font-size:clamp(24px,3.6vw,32px);
+    line-height:1.1;letter-spacing:-.5px;margin-bottom:6px;display:flex;
+    align-items:baseline;gap:14px;flex-wrap:wrap
+  }
+  .where{
+    font-family:"Outfit",sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;padding:3px 9px;border:1.5px solid var(--line);
+    white-space:nowrap;transform:translateY(-2px)
+  }
+  .where.term{background:var(--ink);color:var(--paper)}
+  .where.web{background:transparent}
+  .item p{font-size:16.5px;margin:14px 0;color:#26262300;color:#262623;max-width:660px}
+  .cmd{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:15px;
+    padding:9px 16px;margin:4px 0;font-weight:500
+  }
+  .how{font-size:14.5px;color:var(--muted);margin-top:4px}
+  .doc{
+    display:inline-block;margin-top:14px;font-size:14px;font-weight:600;
+    color:var(--ink);text-decoration:none;border-bottom:2px solid var(--accent);
+    padding-bottom:1px
+  }
+  .doc:hover{color:var(--accent)}
+  .note{
+    margin-top:16px;font-size:14px;background:#fff;border-left:3px solid var(--accent);
+    padding:12px 16px;color:#3a3a36
+  }
+
+  /* FOOTER */
+  footer{border-top:3px solid var(--line);margin-top:20px;padding:48px 0 70px}
+  .foot-h{font-family:"Fraunces",serif;font-weight:900;font-size:26px;margin-bottom:14px}
+  footer p{font-size:15px;color:#2a2a28;max-width:640px;margin-bottom:10px}
+  footer a{color:var(--ink);font-weight:600}
+  .sign{margin-top:26px;font-size:13px;color:var(--muted);letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Учебный материал · Claude &amp; Claude Code</div>
+    <h1>10 фишек <span class="red">Claude</span>,<br>которые усилят вашу работу</h1>
+    <p class="lead">Не промпты, а реальные функции — с точными командами и ссылками на документацию. Каждую можно проверить прямо во время урока. <b>Все команды и названия выверены по официальной документации Claude.</b></p>
+    <div class="legend">
+      <span class="tag term">Терминал — Claude Code</span>
+      <span class="tag web">Браузер — claude.ai</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="item">
+    <div class="num">01</div>
+    <h2>Свои команды <span class="where term">Терминал</span></h2>
+    <p>Повторяющийся процесс можно превратить в собственную команду: научите Claude один раз — дальше запускаете одним словом, не объясняя заново. Идеально для шагов, которые вы делаете постоянно (черновик поста, разбор, ресёрч).</p>
+    <span class="cmd">/ваша-команда</span>
+    <div class="how">Команда создаётся обычным текстовым файлом в папке .claude/skills/ вашего проекта.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">Документация Claude Code</a>
+  </div>
+
+  <div class="item">
+    <div class="num">02</div>
+    <h2>Отчёт о вашей работе <span class="where term">Терминал</span></h2>
+    <p>Claude анализирует ваши прошлые сессии и собирает отчёт: над чем вы работали, какой у вас стиль, что получается, а что тормозит. А команда расхода показывает стоимость сессии и лимиты вашего плана.</p>
+    <span class="cmd">/insights</span> &nbsp; <span class="cmd">/usage</span>
+    <div class="how">/insights — большой разбор вашей работы. /usage — расход токенов и лимиты.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/costs.md" target="_blank" rel="noopener">Документация: расход и лимиты</a>
+  </div>
+
+  <div class="item">
+    <div class="num">03</div>
+    <h2>Сколько контекста осталось <span class="where term">Терминал</span></h2>
+    <p>Живая карта: что прямо сейчас занимает «память» диалога — системные инструкции, прочитанные файлы, подключённые инструменты. Видно, где перегруз, и Claude подсказывает, что почистить.</p>
+    <span class="cmd">/context</span>
+    <div class="how">Чтобы цифра висела постоянно — настройте статус-строку: /statusline</div>
+    <a class="doc" href="https://code.claude.com/docs/en/context-window.md" target="_blank" rel="noopener">Документация: контекстное окно</a>
+  </div>
+
+  <div class="item">
+    <div class="num">04</div>
+    <h2>Шаг назад во времени <span class="where term">Терминал</span></h2>
+    <p>Перед каждым изменением файла Claude делает снимок. Если что-то пошло не так — двойное нажатие <b>Esc</b> откатывает и код, и переписку на шаг назад. Одно нажатие Esc просто останавливает Claude.</p>
+    <span class="cmd">Esc · Esc</span>
+    <div class="how">Это локальные контрольные точки сессии, отдельно от Git.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">Документация Claude Code</a>
+  </div>
+
+  <div class="item">
+    <div class="num">05</div>
+    <h2>Голосовой ввод <span class="where term">Терминал</span></h2>
+    <p>Режим «нажми и говори»: удерживаете пробел, проговариваете задачу, отпускаете — Claude расшифровывает и выполняет. Удобно, когда проще сказать, чем напечатать.</p>
+    <span class="cmd">/voice</span>
+    <div class="how">После команды удерживайте пробел и говорите. Доступно на платных планах.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">Документация Claude Code</a>
+  </div>
+
+  <div class="item">
+    <div class="num">06</div>
+    <h2>Вставить файл одним символом <span class="where term">Терминал</span></h2>
+    <p>Напишите <b>@</b> и имя файла или папки прямо в сообщении — Claude сразу увидит содержимое, не тратя время на поиск. Работает и с файлами, и с целыми папками.</p>
+    <span class="cmd">@имя-файла.md</span>
+    <div class="how">Начните вводить @ — появится список файлов для выбора.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/common-workflows.md" target="_blank" rel="noopener">Документация: рабочие сценарии</a>
+  </div>
+
+  <div class="item">
+    <div class="num">07</div>
+    <h2>Картинка вместо описания <span class="where term">Терминал</span> <span class="where web">Браузер</span></h2>
+    <p>Перетащите изображение в окно или вставьте через <b>Ctrl+V</b> — Claude разбирает скриншоты, макеты, схемы, ошибки. Показали дизайн или ошибку картинкой — получили разбор.</p>
+    <span class="cmd">Перетащить файл · Ctrl + V</span>
+    <div class="how">В терминале вставка — именно Ctrl+V, не Cmd+V.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/common-workflows.md" target="_blank" rel="noopener">Документация: работа с изображениями</a>
+  </div>
+
+  <div class="item">
+    <div class="num">08</div>
+    <h2>Переключение режимов <span class="where term">Терминал</span></h2>
+    <p>Без команды переключаете, насколько Claude самостоятелен: спрашивать каждый раз → принимать правки автоматически → режим плана (сначала показывает план, потом делает). Режим плана — отличный способ увидеть ход мысли до того, как Claude тронет файлы.</p>
+    <span class="cmd">Shift + Tab</span>
+    <div class="how">Нажимайте Shift+Tab во время сессии, чтобы переключать режимы по кругу.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">Документация Claude Code</a>
+  </div>
+
+  <div class="item">
+    <div class="num">09</div>
+    <h2>Сжать диалог с умом <span class="where term">Терминал</span></h2>
+    <p>Когда переписка разрослась, эта команда ужимает старое и освобождает контекст. Главное — можно указать, что сохранить, и Claude не выбросит важное.</p>
+    <span class="cmd">/compact оставь только [тема]</span>
+    <div class="how">Без уточнения /compact сожмёт по своему усмотрению.</div>
+    <a class="doc" href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">Документация Claude Code</a>
+  </div>
+
+  <div class="item">
+    <div class="num">10</div>
+    <h2>Память, которую не нужно повторять <span class="where term">Терминал</span> <span class="where web">Браузер</span></h2>
+    <p>Claude хранит контекст о вас и читает его перед каждой задачей — не нужно объяснять себя заново. В терминале это команда <b>/memory</b>. В браузере claude.ai — раздел «Память» в настройках, плюс «Поиск по прошлым чатам»: после включения можно попросить <i>«опиши меня по всем нашим диалогам»</i>, и Claude соберёт ваш портрет.</p>
+    <span class="cmd">/memory</span>
+    <div class="how">Быстро дописать факт в терминале — начните строку с символа #. В браузере: Настройки → Профиль → «Поиск по прошлым чатам».</div>
+    <a class="doc" href="https://code.claude.com/docs/en/memory.md" target="_blank" rel="noopener">Документация: память</a>
+  </div>
+
+</main>
+
+<footer class="wrap">
+  <div class="foot-h">С чего начать</div>
+  <p>Если фишек много — начните с трёх: <b>/context</b> (видеть загрузку диалога), <b>двойной Esc</b> (откат назад) и <b>@файл</b> (быстро дать Claude нужное). Остальное подключайте по мере привычки.</p>
+  <p>Большинство команд работают в <b>Claude Code</b> — это версия в терминале (нужен план Pro или выше). Картинки и память работают и в браузере на <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>.</p>
+  <p>Полная документация: <a href="https://code.claude.com/docs/en/" target="_blank" rel="noopener">code.claude.com/docs</a></p>
+  <div class="sign">Учебный материал к уроку · IRA AI</div>
+</footer>
+
+</body>
+</html>

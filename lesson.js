@@ -8,6 +8,7 @@ const secondaryAction = document.getElementById('lesson-secondary-action');
 const videoContainer = document.getElementById('lesson-video');
 const afterWatchList = document.getElementById('lesson-after-watch');
 const homeworkNode = document.getElementById('lesson-homework');
+const homeworkCard = document.getElementById('lesson-homework-card');
 const lockedState = document.getElementById('lesson-locked');
 const openState = document.getElementById('lesson-open');
 
@@ -85,12 +86,14 @@ function renderVideo(lessonPage) {
 
 function renderOpenLesson(lesson) {
   const lessonPage = lesson.lessonPage ?? {};
+  const homeworkText = (lesson.homework ?? '').trim();
   document.title = `Claude Hub — ${lesson.title}`;
 
   labelNode.textContent = `${lesson.date} · ${lesson.id.replace('day-', 'урок ')}`;
   titleNode.textContent = lessonPage.heroTitle ?? lesson.title;
   introNode.textContent = lessonPage.heroIntro ?? lesson.summary;
-  homeworkNode.textContent = lesson.homework;
+  homeworkNode.textContent = homeworkText;
+  homeworkCard.classList.toggle('hidden', !homeworkText);
 
   afterWatchList.innerHTML = (lessonPage.afterWatch ?? [])
     .map((item) => `<li>${item}</li>`)
@@ -104,12 +107,14 @@ function renderOpenLesson(lesson) {
 }
 
 function renderLockedLesson(lesson) {
+  const homeworkText = (lesson.homework ?? '').trim();
   document.title = `Claude Hub — ${lesson.title}`;
   labelNode.textContent = `${lesson.date} · ${lesson.id.replace('day-', 'урок ')}`;
   titleNode.textContent = lesson.title;
   introNode.textContent = lesson.summary;
   afterWatchList.innerHTML = '<li>Материалы появятся после открытия урока.</li>';
-  homeworkNode.textContent = lesson.homework;
+  homeworkNode.textContent = homeworkText;
+  homeworkCard.classList.toggle('hidden', !homeworkText);
   lockedState.classList.remove('hidden');
   openState.classList.add('hidden');
 }
@@ -123,6 +128,7 @@ if (!lesson) {
   introNode.textContent = 'Похоже, ссылка ведет в пустоту. Это уже не методология, это бардак.';
   afterWatchList.innerHTML = '<li>Проверь ссылку на урок.</li>';
   homeworkNode.textContent = 'Сначала найти нормальную ссылку.';
+  homeworkCard.classList.remove('hidden');
   lockedState.classList.remove('hidden');
   openState.classList.add('hidden');
 } else if (lesson.status !== 'open') {

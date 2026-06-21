@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>КЛОД ХАБ — ira&ai</title>
+  <title>CLAUDE ХАБ — ira&ai</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,7 +54,7 @@
 </head>
 <body class="bg-bgMain text-textCream font-sans selection:bg-brand selection:text-bgMain antialiased overflow-x-hidden bg-grid">
 
-  <nav class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex justify-between items-center relative z-50 font-mono text-xs">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex justify-between items-center gap-3 relative z-50 font-mono text-xs">
     <a href="https://t.me/ira_and_ai" target="_blank" class="text-brand font-bold tracking-wider opacity-90 hover:opacity-100 transition-opacity">ira&ai</a>
     <div class="hidden md:flex gap-8 text-zinc-500">
       <a href="#about" class="hover:text-textCream transition-colors">о хабе</a>
@@ -62,12 +62,12 @@
       <a href="#tariffs" class="hover:text-textCream transition-colors">тарифы</a>
       <a href="#faq" class="hover:text-textCream transition-colors">faq</a>
     </div>
-    <a href="#tariffs" class="hidden sm:inline-flex border border-zinc-800 text-zinc-400 rounded-full px-5 py-2 tracking-wide hover:border-brand hover:text-brand transition-all">
-      забрать место
+    <a href="#tariffs" class="hidden sm:inline-flex shrink-0 border border-zinc-800 text-zinc-400 rounded-full px-4 md:px-5 py-2 tracking-wide hover:border-brand hover:text-brand transition-all">
+      забрать доступ
     </a>
   </nav>
 
-  <section class="relative min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] flex flex-col justify-center items-center px-4 pt-2 md:pt-4 pb-10 md:pb-16 overflow-hidden">
+  <section class="relative min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-80px)] flex flex-col justify-center items-center px-4 pt-4 md:pt-4 pb-10 md:pb-16 overflow-hidden">
     <div class="mb-3 font-mono text-brand text-xs border border-brand/45 rounded px-4 py-2">click me_</div>
 
     <div id="avatar-container" class="relative w-56 h-56 md:w-[430px] md:h-[430px] mb-6 md:mb-8 cursor-pointer select-none transition-transform duration-200 ease-out" style="transform-style: preserve-3d;">
@@ -89,27 +89,31 @@
       </div>
     </div>
 
-    <div class="font-mono text-brand text-sm md:text-base mb-4 tracking-wider">
-      &gt; claude --start-hub_
+    <div class="font-mono text-brand text-xs sm:text-sm md:text-base mb-4 tracking-wider text-center break-words">
+      &gt; claude --open-hub_
     </div>
 
-    <h1 class="font-sans text-5xl sm:text-7xl md:text-[116px] font-black tracking-tighter text-white uppercase leading-none text-center mb-6 select-none flex flex-col sm:flex-row justify-center gap-x-8 gap-y-1 max-w-full">
+    <h1 class="font-sans text-5xl sm:text-7xl md:text-[116px] font-black tracking-[-0.06em] text-white uppercase leading-[0.92] text-center mb-6 select-none flex flex-col sm:flex-row justify-center gap-x-6 md:gap-x-8 gap-y-1 max-w-full">
       <span>CLAUDE</span><span>ХАБ</span>
     </h1>
 
-    <p class="font-mono text-sm md:text-xl xl:text-2xl text-zinc-400 text-center max-w-6xl mb-6 tracking-tight px-4 leading-relaxed md:whitespace-nowrap">
-      <span class="block sm:inline">3 недели.</span>
-      <span class="bg-brand text-bgMain px-2 py-0.5 font-bold mx-0.5">Каждый день, кроме воскресенья.</span>
-      <span class="block sm:inline">Вместе разбираем Claude.</span>
+    <p class="font-mono text-sm sm:text-base md:text-xl xl:text-2xl text-zinc-400 text-center max-w-3xl mb-6 tracking-tight px-2 sm:px-4 leading-relaxed">
+      <span class="block sm:inline">Проект в записи.</span>
+      <span class="inline-block bg-brand text-bgMain px-2 py-0.5 font-bold mx-0.5 my-1">Claude Hub прошёл с 1 по 21 июня 2026 года.</span>
+      <span class="block sm:inline">Внутри 18 уроков, промпты и скиллы.</span>
     </p>
 
-    <div class="font-mono text-xs md:text-sm text-zinc-500 bg-zinc-950/80 border border-zinc-900/60 px-5 py-2.5 rounded-full mb-10 tracking-wide">
-      &gt; 1–21 июня 2026 · <span class="text-brand font-medium">ira&ai _</span>
+    <div class="max-w-[92vw] sm:max-w-full font-mono text-xs md:text-sm text-zinc-300 font-semibold bg-zinc-950/80 border border-zinc-900/60 px-4 sm:px-5 py-2.5 rounded-[20px] sm:rounded-full mb-10 tracking-wide text-center leading-relaxed">
+      <span class="block sm:inline">&gt; моментальный доступ</span>
+      <span class="hidden sm:inline"> · </span>
+      <span class="block sm:inline">18 уроков</span>
+      <span class="hidden sm:inline"> · </span>
+      <span class="block sm:inline text-brand font-medium">ira&ai _</span>
     </div>
 
     <div id="terminal-code" class="sr-only"></div>
 
-    <a href="#about" class="bg-brand text-bgMain font-mono font-bold text-xs tracking-widest uppercase px-12 py-4 rounded-xl hover:bg-opacity-95 transition-all shadow-lg shadow-brand/10">
+    <a href="#about" class="bg-brand text-bgMain font-mono font-bold text-xs tracking-widest uppercase px-8 sm:px-12 py-4 rounded-xl hover:bg-opacity-95 transition-all shadow-lg shadow-brand/10">
       ЧТО ВНУТРИ
     </a>
   </section>
@@ -118,10 +122,9 @@
     <div class="font-mono text-zinc-600 text-xs mb-4">&gt; cat intro.md</div>
     <h2 class="font-sans text-3xl font-bold mb-6 text-white tracking-tight">Привет, это Ира&ai.</h2>
     <div class="space-y-6 text-zinc-400 text-base md:text-lg font-normal leading-relaxed">
-      <p>Хаб — это тематическое погружение в новый инструмент. Каждые три месяца я открываю окно, в котором мы три-четыре недели копаем одну тему.</p>
-      <p>Первый хаб был в декабре — про карусели. На них я выросла на 14 000 подписчиков.</p>
-      <p>Второй был в феврале — про агентов. На той механике построены <a href="https://t.me/ira_alfred_bot" target="_blank" class="text-brand underline hover:text-opacity-80 transition-opacity">Альфред</a> и <a href="https://t.me/bananan1bot" target="_blank" class="text-brand underline hover:text-opacity-80 transition-opacity">Бананабот</a>.</p>
-      <p>Третий — про <span class="text-brand font-semibold">Claude</span>. С 1 по 21 июня.</p>
+      <p>Claude Hub прошёл с 1 по 21 июня 2026 года. Сейчас вы можете забрать проект в записи и пользоваться материалами до 31 августа.</p>
+      <p>Внутри — 18 уроков на портале, промпты, скиллы и весь собранный контент. Доступ к материалам моментальный: заходите и сразу начинаете смотреть в своём темпе.</p>
+      <p>Сейчас доступен только базовый вариант: весь контент проекта в записи, без отдельного тарифа с поддержкой.</p>
       <p class="font-mono text-xs text-zinc-500 border border-zinc-900 bg-zinc-950/40 p-5 rounded-xl mt-8 leading-loose">
         Если что-то не написала — спросите <a href="https://t.me/ira_alfred_bot" target="_blank" class="text-brand underline hover:text-opacity-80 transition-opacity">@ira_alfred_bot</a>, отвечу.
       </p>
@@ -130,18 +133,17 @@
 
   <section id="roadmap" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-900/40">
     <div class="font-mono text-zinc-600 text-xs mb-4">&gt; ./get-roadmap.sh</div>
-    <h2 class="font-sans text-3xl font-black mb-6 text-white uppercase tracking-tight">Что Мы Будем Делать</h2>
+    <h2 class="font-sans text-3xl font-black mb-6 text-white uppercase tracking-tight">Что Внутри Проекта</h2>
     <p class="text-zinc-400 text-base md:text-lg mb-8 font-normal leading-relaxed">
-      Три недели мы вместе копаем тему Claude. <span class="text-brand font-semibold">С 1 по 21 июня.</span> Один выходной в неделю, потому что без выходных никто не выдерживает.
+      Сразу по делу: 18 уроков, промпты, скиллы и готовый контент на портале, который можно проходить в удобном темпе.
     </p>
 
     <div class="bg-zinc-950/50 border border-zinc-900 rounded-2xl p-6 md:p-8">
-      <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest mb-4">// стек разбора под микроскопом:</div>
+      <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest mb-4">// что лежит внутри:</div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 font-mono text-xs text-zinc-400">
         <div onclick="runFeature('chat')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Chat — как настроить под себя</div>
         <div onclick="runFeature('projects')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Projects — что это и зачем</div>
         <div onclick="runFeature('cowork')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Cowork — параллельные сессии</div>
-        <div onclick="runFeature('dispatch')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Dispatch — новые фичи</div>
         <div onclick="runFeature('code')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Claude Code — терминальный ИИ</div>
         <div onclick="runFeature('design')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Claude Design</div>
         <div onclick="runFeature('connectors')" class="flex items-center gap-2.5 cursor-pointer hover:text-brand transition-colors p-1.5 rounded hover:bg-zinc-900/40"><span class="text-zinc-700">—</span> Коннекторы и MCP</div>
@@ -149,17 +151,8 @@
       </div>
     </div>
     <p class="text-zinc-500 font-mono text-xs mt-6">
-      Это не курс. Это пространство: три недели вместе со мной изучаем тему.
+      18 уроков, промпты, скиллы и готовый контент на портале без ожидания нового запуска.
     </p>
-  </section>
-
-  <section class="max-w-3xl mx-auto px-6 py-12">
-    <div class="border-l-2 border-brand/40 bg-zinc-950/30 py-5 pl-6 rounded-r-xl">
-      <span class="font-mono text-[10px] text-brand/50 uppercase tracking-widest block mb-2">manifest.log</span>
-      <p class="text-base md:text-lg font-light text-zinc-300 leading-relaxed italic">
-        «Если сделаете все домашки, которые я дам, вы выйдете из хаба уверенным пользователем Claude. Не теоретиком, не «я слышал», а человеком, который реально пользуется. И если Anthropic выкатит что-то новое за эти три недели — мы разберём это в реальном времени, вместе.»
-      </p>
-    </div>
   </section>
 
   <section class="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-900/40">
@@ -170,21 +163,21 @@
       <div class="bg-bgCard/10 border border-zinc-900 rounded-2xl p-6 md:p-8">
         <div class="font-mono text-brand text-xs uppercase tracking-widest mb-6">// подойдёт</div>
         <ul class="space-y-4 text-zinc-300 text-sm md:text-base leading-relaxed">
-          <li class="flex gap-3"><span class="text-brand">✓</span><span>У вас есть платный Claude или вы готовы его оформить.</span></li>
-          <li class="flex gap-3"><span class="text-brand">✓</span><span>Вы работаете за компьютером: пишете, продаёте, строите проекты, ведёте проекты.</span></li>
-          <li class="flex gap-3"><span class="text-brand">✓</span><span>Хотите разобраться с инструментом всерьёз, не на уровне «привет, напиши мне пост».</span></li>
-          <li class="flex gap-3"><span class="text-brand">✓</span><span>Готовы делать, а не только смотреть.</span></li>
+          <li class="flex gap-3"><span class="text-brand">✓</span><span>Хотите забрать проект в записи и пройти его в своём темпе.</span></li>
+          <li class="flex gap-3"><span class="text-brand">✓</span><span>Нужен быстрый доступ к 18 урокам, промптам и скиллам без ожидания нового потока.</span></li>
+          <li class="flex gap-3"><span class="text-brand">✓</span><span>Работаете за компьютером и хотите внедрять AI в реальные задачи.</span></li>
+          <li class="flex gap-3"><span class="text-brand">✓</span><span>Хотите просто забрать весь контент проекта в записи без лишних надстроек.</span></li>
         </ul>
       </div>
 
       <div class="bg-bgCard/10 border border-zinc-900 rounded-2xl p-6 md:p-8">
         <div class="font-mono text-zinc-500 text-xs uppercase tracking-widest mb-6">// не подойдёт</div>
         <ul class="space-y-4 text-zinc-400 text-sm md:text-base leading-relaxed">
-          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>«Хочу, чтобы AI всё сделал за меня» — не сюда.</span></li>
-          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>«Хочу, чтобы Ира собрала мне продукт и всё настроила» — тут не будет личной работы.</span></li>
-          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Никогда не открывали Claude — иногда будет тяжело, материалы для тех, кто уже пробовал и готов разбираться.</span></li>
-          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Не готовы выделить хотя бы 20 минут в день на освоение.</span></li>
-          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Вы бог вайбкодинга и работаете в любой нейронке — возможно, будет скучновато.</span></li>
+          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Ждёте живой поток с новыми ежедневными уроками — проект уже в записи.</span></li>
+          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Хотите, чтобы за вас всё настроили под ключ без вашего участия.</span></li>
+          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Не готовы самостоятельно смотреть материалы и применять их в работе.</span></li>
+          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Нужен бессрочный доступ — здесь доступ открыт до 31 августа.</span></li>
+          <li class="flex gap-3"><span class="text-zinc-600">×</span><span>Ищете совсем базовое знакомство без практики и внедрения.</span></li>
         </ul>
       </div>
     </div>
@@ -192,108 +185,42 @@
 
   <section id="tariffs" class="max-w-6xl mx-auto px-6 py-24 border-t border-zinc-900/40">
     <h2 class="font-sans text-3xl font-black uppercase tracking-tight text-center mb-16 text-white">
-      Варианты Участия
+      Доступ К Проекту
     </h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 max-w-2xl mx-auto">
       <div class="bg-bgCard/20 border border-zinc-900 rounded-[28px] p-8 flex flex-col justify-between items-center relative transition-all">
         <div class="w-full flex flex-col items-center">
           <div class="w-12 h-12 bg-brand star-clip mb-6"></div>
-          <h3 class="font-sans text-2xl font-black text-white uppercase tracking-wide">КЛОД ХАБ</h3>
-          <p class="font-mono text-xs text-zinc-600 mt-1 mb-8">// без обратной связи</p>
+          <h3 class="font-sans text-2xl font-black text-white uppercase tracking-wide">CLAUDE ХАБ</h3>
+          <p class="font-mono text-xs text-zinc-600 mt-1 mb-8">// контент в записи</p>
 
           <ul class="space-y-4 text-zinc-400 font-mono text-xs text-left w-full border-t border-zinc-900/60 pt-6">
             <li class="flex items-start gap-3">
               <span class="text-zinc-700 font-bold">_</span>
-              <span>Все материалы: скринкасты, промпты, разборы тем</span>
+              <span>18 уроков на портале: весь контент проекта в записи</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="text-zinc-700 font-bold">_</span>
-              <span>Доступ к материалам до конца лета</span>
+              <span>Промпты, скиллы и материалы по урокам</span>
             </li>
             <li class="flex items-start gap-3">
               <span class="text-zinc-700 font-bold">_</span>
-              <span>Закрытый канал с контентом хаба</span>
+              <span>Доступ к проекту до 31 августа</span>
             </li>
           </ul>
         </div>
 
         <div class="w-full mt-12 pt-6 border-t border-zinc-900/40">
-          <div class="font-mono text-4xl font-black text-white tracking-tight text-center mb-6">4 900 ₽</div>
+          <div class="font-mono text-4xl font-black text-white tracking-tight text-center mb-6">6 500 ₽</div>
           <div class="w-full mb-4 invisible" aria-hidden="true">
             <div class="h-[42px] rounded-lg border border-zinc-900"></div>
           </div>
-          <a href="https://payform.ru/mabAfpm/" target="_blank" class="block w-full text-center font-mono text-xs font-bold text-zinc-300 border border-zinc-800 rounded-xl py-4 hover:border-zinc-500 hover:text-white transition-all uppercase tracking-widest">
-            Купить Клод Хаб
+          <a href="https://payform.ru/6kbONIC/" target="_blank" class="block w-full text-center font-mono text-xs font-bold text-zinc-300 border border-zinc-800 rounded-xl py-4 hover:border-zinc-500 hover:text-white transition-all uppercase tracking-widest">
+            Купить Claude Хаб
           </a>
         </div>
       </div>
-
-      <div class="bg-bgMain border-2 border-brand rounded-[28px] p-8 flex flex-col justify-between items-center relative glow-brand">
-        <div class="w-full flex flex-col items-center">
-          <div class="w-12 h-12 relative mb-6">
-            <div class="w-full h-full bg-brand star-clip"></div>
-            <svg class="absolute inset-0 m-auto w-8 h-8 fill-bgMain -translate-y-0.5 drop-shadow-sm" viewBox="0 0 100 100" aria-hidden="true">
-              <path d="M10 40 h80 v10 h-10 v-5 h-20 v5 h-10 v-5 h-20 v5 h-10 v-5 h-10 Z M20 45 h10 v5 h-10 Z M60 45 h10 v5 h-10 Z M15 35 h10 v5 h-10 Z M75 35 h10 v5 h-10 Z"/>
-              <rect x="25" y="42" width="4" height="4" fill="#F5F1EB" />
-              <rect x="65" y="42" width="4" height="4" fill="#F5F1EB" />
-            </svg>
-          </div>
-
-          <h3 class="font-sans text-2xl font-black text-brand uppercase tracking-wide">КЛОД ХАБ+</h3>
-          <p class="font-mono text-xs text-brand/60 mt-1 mb-8">// с обратной связью</p>
-
-          <ul class="space-y-4 text-zinc-300 font-mono text-xs text-left w-full border-t border-brand/20 pt-6">
-            <li class="flex items-start gap-2">
-              <span class="text-brand font-bold">&gt;</span>
-              <span>Всё из стандартного Клод Хаба</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-brand font-bold">&gt;</span>
-              <span>Закрытый чат разборов и ответов</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-brand font-bold">&gt;</span>
-              <span>Два больших Zoom-созвона по задачам</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-brand font-bold">&gt;</span>
-              <span>Ответы на вопросы пакетом на следующий день</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="w-full mt-12 pt-6 border-t border-brand/20">
-          <div id="hub-plus-price" class="font-mono text-4xl font-black text-brand tracking-tight text-center mb-2">12 900 ₽</div>
-          <p id="hub-plus-price-note" class="font-mono text-[10px] text-zinc-600 text-center mb-4 min-h-[14px]"></p>
-          <div class="w-full mb-4 text-left">
-            <input type="text" id="promo-field" placeholder="ПРОМОКОД" class="w-full bg-bgCard border border-zinc-900 focus:border-brand/30 text-textCream font-mono text-xs rounded-lg px-3 py-3 outline-none transition-colors placeholder-zinc-700 text-center tracking-widest">
-          </div>
-          <a id="payment-btn-plus" href="https://payform.ru/qwbAfrQ/" target="_blank" class="block w-full text-center font-mono text-xs font-bold text-bgMain bg-brand rounded-xl py-4 hover:bg-opacity-90 transition-all uppercase tracking-widest">
-            Купить Клод Хаб+
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="max-w-3xl mx-auto px-6 py-20 border-t border-zinc-900/40">
-    <div class="font-mono text-zinc-600 text-xs mb-4">&gt; hubplus.feedback</div>
-    <h2 class="font-sans text-3xl font-black uppercase tracking-tight mb-6 text-white">Как работает обратная связь в Хаб+</h2>
-    <div class="space-y-5 text-zinc-400 text-sm md:text-base leading-relaxed">
-      <p>Расскажу подробнее, чтобы вы сразу понимали, что покупаете.</p>
-      <p>Вы задаёте вопросы по уроку дня: что не получилось, что хочется углубить, где вы застряли именно в рамках темы хаба.</p>
-      <p>На следующий день я отвечаю одним пакетом — либо голосовым сообщением, либо коротким скринкастом, в зависимости от того, что удобнее объяснить или показать.</p>
-      <div class="border border-brand/20 bg-zinc-950/40 rounded-2xl p-5">
-        <p class="font-mono text-brand text-xs uppercase tracking-widest mb-3">// важно</p>
-        <p>Это не формат индивидуальной техподдержки и не ответы на любые вопросы подряд. Я разбираю вопросы по теме уроков, по внедрению и по тем местам, где у участников возникает общий повторяющийся затык.</p>
-      </div>
-      <ul class="space-y-3 font-mono text-xs text-zinc-300">
-        <li><span class="text-brand">→</span> Не нужно ждать ответа в реальном времени: на следующий день вы получаете разбор вопросов по теме.</li>
-        <li><span class="text-brand">→</span> Я отвечаю сразу на вопросы группы, поэтому ответы полезны не только тому, кто спросил.</li>
-        <li><span class="text-brand">→</span> Часть ответов превращается в дополнительные мини-уроки и остаётся в канале.</li>
-      </ul>
-      <p>Плюс в Хаб+ будут два Zoom-созвона. Туда вынесем всё, что лучше разбирать вживую: накопившиеся вопросы, показ экрана и темы, которые требуют диалога.</p>
     </div>
   </section>
 
@@ -308,7 +235,7 @@
         </button>
         <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-zinc-400 text-sm font-normal leading-relaxed">
           <div class="pb-5">
-            Если вы хотите разобраться с Клодом — справитесь. Если вообще никогда ничего не открывали, попробуйте сначала пару дней бесплатную версию и посмотрите мой канал: понятно ли то, что я пишу.
+            Если хотите пройти проект в записи спокойно и с пользой — справитесь. Главное, чтобы у вас был интерес не просто посмотреть, а внедрить.
           </div>
         </div>
       </div>
@@ -319,7 +246,7 @@
           <span class="text-zinc-600 shrink-0">+</span>
         </button>
         <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-zinc-400 text-sm font-normal leading-relaxed">
-          <div class="pb-5">Да. Без него половина того, что мы разбираем, не будет доступна.</div>
+          <div class="pb-5">Желательно, если хотите не просто смотреть, а повторять материалы на практике.</div>
         </div>
       </div>
 
@@ -330,19 +257,19 @@
         </button>
         <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-zinc-400 text-sm font-normal leading-relaxed">
           <div class="pb-5">
-            В тарифе Хаб материалы у вас до конца лета, можно изучать своим темпом. В Хаб+ есть чат и Zoom, там удобнее идти вместе, но материалы тоже никуда не исчезнут до сентября.
+            Это как раз сценарий под запись: доступ открывается сразу, и вы идёте в удобном темпе. Проект работает до 31 августа.
           </div>
         </div>
       </div>
 
       <div class="border border-zinc-900 bg-bgCard/10 rounded-xl overflow-hidden">
         <button class="w-full text-left px-5 py-4 font-mono text-xs flex justify-between items-center gap-4 text-zinc-300 hover:text-brand transition-colors" onclick="toggleFAQ(this)">
-          <span>Что после 21 июня?</span>
+          <span>Что это сейчас: живой поток или запись?</span>
           <span class="text-zinc-600 shrink-0">+</span>
         </button>
         <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-zinc-400 text-sm font-normal leading-relaxed">
           <div class="pb-5">
-            Купить доступ будет нельзя. Материалы в канале остаются для тех, кто купил. Обещаю минимум до конца лета, но скорее всего останутся надолго.
+            Сейчас это запись проекта, который прошёл с 1 по 21 июня 2026 года. Вы получаете доступ к уже готовому контенту и можете пользоваться им до 31 августа.
           </div>
         </div>
       </div>
@@ -354,7 +281,7 @@
         </button>
         <div class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-zinc-400 text-sm font-normal leading-relaxed">
           <div class="pb-5">
-            После оплаты Продамус сразу отправит вам инвайт в закрытый канал на email. Если письмо не пришло за 5 минут — пишите <a href="https://t.me/ira_alfred_bot" target="_blank" class="text-brand underline hover:text-opacity-80 transition-opacity">@ira_alfred_bot</a>.
+            После оплаты вы получаете доступ к проекту. Если письмо не пришло за 5 минут — пишите <a href="https://t.me/ira_alfred_bot" target="_blank" class="text-brand underline hover:text-opacity-80 transition-opacity">@ira_alfred_bot</a>.
           </div>
         </div>
       </div>
@@ -403,19 +330,18 @@
 
     const defaultCodeLines = [
       "const claude = await Anthropic.init();",
-      "await claude.project.deploy('ira-ai-hub', {",
-      "  duration: '3_weeks',",
-      "  schedule: 'mon-sat',",
-      "  features: ['MCP', 'Code', 'Vibe']",
+      "await claude.project.open('claude-hub-recording', {",
+      "  format: 'recording',",
+      "  accessUntil: '2026-08-31',",
+      "  content: ['18 lessons', 'prompts', 'skills']",
       "});",
-      "// Status: Ready. 1-21 June 2026."
+      "// Status: Instant access."
     ];
 
     const featureCommands = {
       chat: ["claude.chat.configure({ tone: 'ira-ai' });", "// Chat настроен под ваши задачи."],
       projects: ["claude.projects.create('hub-workspace');", "// Projects: контекст собран, база подключена."],
       cowork: ["claude.cowork.spawn(['writer', 'editor']);", "// Cowork: несколько Claude работают параллельно."],
-      dispatch: ["claude.dispatch.watchNewFeatures();", "// Dispatch: новые фичи забираем в работу."],
       code: ["claude.code.open('/terminal');", "// Claude Code: идём в терминал."],
       design: ["claude.design.generate('landing-system');", "// Claude Design: собираем визуальную логику."],
       connectors: ["claude.connectors.link(['Drive', 'MCP']);", "// Коннекторы и MCP подключены."],
@@ -454,23 +380,6 @@
       typeCode();
       document.getElementById('terminal-code').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-
-    const promoField = document.getElementById('promo-field');
-    const plusBtn = document.getElementById('payment-btn-plus');
-    const plusPrice = document.getElementById('hub-plus-price');
-    const plusPriceNote = document.getElementById('hub-plus-price-note');
-    const baseHref = 'https://payform.ru/qwbAfrQ/';
-    const promoHref = 'https://payform.ru/sjbAfsH/';
-    const basePrice = '12 900 ₽';
-    const discountedPrice = '11 900 ₽';
-    const promoCode = 'etoya';
-    promoField.addEventListener('input', (e) => {
-      const val = e.target.value.trim().toLowerCase();
-      const promoApplied = val === promoCode;
-      plusPrice.textContent = promoApplied ? discountedPrice : basePrice;
-      plusPriceNote.textContent = promoApplied ? 'Промокод применён: скидка 1 000 ₽' : '';
-      plusBtn.setAttribute('href', promoApplied ? promoHref : baseHref);
-    });
 
     function toggleFAQ(btn) {
       const content = btn.nextElementSibling;
